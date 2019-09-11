@@ -3,5 +3,9 @@
   "workspaces": [
     "packages/client",
     "packages/server"
-  ]
+  ],
+  "scripts": {
+    "start:server": "yarn workspace server node src/index.js",
+    "start:web": "yarn workspace client yarn start"
+  }
 }

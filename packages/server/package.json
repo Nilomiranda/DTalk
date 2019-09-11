@@ -4,6 +4,11 @@
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
+    "graphql": "^14.5.4",
     "koa": "^2.8.1"
+  },
+  "devDependencies": {
+    "koa-graphql": "^0.8.0",
+    "koa-mount": "^4.0.0"
   }
 }
