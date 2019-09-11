@@ -23,4 +23,7 @@ app.use(mount('/graphql', graphqlHTTP({
   graphiql: true,
 })));
 
+// useless test
+app.use(mount('/hello', (ctx) => ctx.body = 'Hi my friend'));
+
 app.listen(3333);
