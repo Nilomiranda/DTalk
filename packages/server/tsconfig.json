@@ -1,7 +1,9 @@
 {
+  "compileOnSave": true,
   "version":  "3.6.3",
   "compilerOptions": {
     "outDir": "./dist",
+    "watch": true,
     "lib": ["es5", "es6"],
     "target": "es6",
     "module": "es2015",

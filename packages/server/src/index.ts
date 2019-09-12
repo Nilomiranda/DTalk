@@ -27,10 +27,10 @@ app.use(mount('/graphql', graphqlHTTP({
   rootValue: resolver.Query,
 })));
 
-let msg: string;
-msg = 'Hi from typescript node';
+let msg: number;
+msg = 1332;
 
 // useless test
-app.use(mount('/hello', (ctx): string => ctx.body = msg));
+app.use(mount('/hello', (ctx): number => ctx.body = msg));
 
 app.listen(3333);
