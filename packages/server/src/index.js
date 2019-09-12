@@ -1,26 +1,29 @@
 const Koa = require('koa');
 const mount = require('koa-mount');
-const graphqlHTTP = require('koa-graphql');
+const graphqlHTTP = require('koa-graphql'); // graphql server
 const app = new Koa();
 const graphql = require('graphql');
 
-const MyGraphqlSchema = new graphql.GraphQLSchema({
-  query: new graphql.GraphQLObjectType({
-    name: 'FirstQuery',
-    fields: {
-      info: {
-        type: graphql.GraphQLString,
-        resolve() {
-          return 'hello graphql'
-        }
-      }
-    }
-  })
-})
+const MyGraphqlSchema = graphql.buildSchema(`
+  type Query {
+    info: String!,
+    errorTest: String!,
+    optionalString: String
+  }
+`);
+
+const resolver = {
+  Query: {
+    info: () => 'Hello World',
+    errorTest: () => null,
+    optionalString: () => 'nothing valuable really',
+  }
+}
 
 app.use(mount('/graphql', graphqlHTTP({
   schema: MyGraphqlSchema,
   graphiql: true,
+  rootValue: resolver.Query,
 })));
 
 // useless test

@@ -5,7 +5,8 @@
   "license": "MIT",
   "dependencies": {
     "graphql": "^14.5.4",
-    "koa": "^2.8.1"
+    "koa": "^2.8.1",
+    "nodemon": "^1.19.2"
   },
   "devDependencies": {
     "koa-graphql": "^0.8.0",
