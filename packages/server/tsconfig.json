@@ -1,0 +1,13 @@
+{
+  "version":  "3.6.3",
+  "compilerOptions": {
+    "outDir": "./dist",
+    "lib": ["es5", "es6"],
+    "target": "es6",
+    "module": "es2015",
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true
+  },
+  "include": ["./src/**/*"]
+}

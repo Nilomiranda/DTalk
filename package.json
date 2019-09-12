@@ -5,7 +5,7 @@
     "packages/server"
   ],
   "scripts": {
-    "start:server": "yarn workspace server nodemon --exec babel-node src/index.js",
+    "start:server": "yarn workspace server nodemon --exec babel-node dist/index.js",
     "start:web": "yarn workspace client yarn start"
   }
 }
