@@ -1,10 +1,11 @@
-const Koa = require('koa');
-const mount = require('koa-mount');
-const graphqlHTTP = require('koa-graphql'); // graphql server
-const app = new Koa();
-const graphql = require('graphql');
+import Koa from 'koa';
+import mount from 'koa-mount';
+import graphqlHTTP from 'koa-graphql'; // graphql server
+import { buildSchema } from 'graphql';
 
-const MyGraphqlSchema = graphql.buildSchema(`
+const app = new Koa();
+
+const MyGraphqlSchema = buildSchema(`
   type Query {
     info: String!,
     errorTest: String!,

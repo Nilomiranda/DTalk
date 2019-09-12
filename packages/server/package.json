@@ -9,6 +9,9 @@
     "nodemon": "^1.19.2"
   },
   "devDependencies": {
+    "@babel/core": "^7.6.0",
+    "@babel/node": "^7.6.1",
+    "@babel/preset-env": "^7.6.0",
     "koa-graphql": "^0.8.0",
     "koa-mount": "^4.0.0"
   }
