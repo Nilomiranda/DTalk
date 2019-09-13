@@ -9,7 +9,10 @@
     "module": "es2015",
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    // "typeRoots": ["../../node_modules/@types"]
   },
+  // "files": ["src/@types/graphql.d.ts"],
   "include": ["./src/**/*"]
 }

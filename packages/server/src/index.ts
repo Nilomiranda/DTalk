@@ -1,36 +1,24 @@
 import Koa from 'koa';
-import mount from 'koa-mount';
-import graphqlHTTP from 'koa-graphql'; // graphql server
-import { buildSchema } from 'graphql';
+import router from './routes';
 
 const app = new Koa();
 
-const MyGraphqlSchema = buildSchema(`
-  type Query {
-    info: String!,
-    errorTest: String!,
-    optionalString: String
-  }
-`);
+app.use(router.routes());
 
-const resolver = {
-  Query: {
-    info: () => 'Hello World',
-    errorTest: () => null,
-    optionalString: () => 'nothing valuable really',
+const users = [
+  {
+    id: 1,
+    name: 'Danilo Miranda',
+    email: 'me@danmiranda.io'
+  },
+  {
+    id: 2,
+    name: 'Roberta Thaynara Prates Rangel',
+    email: 'roberta08@gmail.com'
   }
-}
-
-app.use(mount('/graphql', graphqlHTTP({
-  schema: MyGraphqlSchema,
-  graphiql: true,
-  rootValue: resolver.Query,
-})));
+]
 
 let msg: number;
 msg = 1332;
-
-// useless test
-app.use(mount('/hello', (ctx): number => ctx.body = msg));
 
 app.listen(3333);

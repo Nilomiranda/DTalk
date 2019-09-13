@@ -4,8 +4,12 @@
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
+    "@types/node": "^12.7.5",
+    "apollo-server-koa": "^2.9.3",
     "graphql": "^14.5.4",
+    "graphql-import": "^0.7.1",
     "koa": "^2.8.1",
+    "koa-router": "^7.4.0",
     "nodemon": "^1.19.2"
   },
   "devDependencies": {
