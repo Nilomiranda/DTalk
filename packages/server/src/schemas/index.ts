@@ -4,6 +4,8 @@ import {
   GraphQLString,
   GraphQLInt,
   GraphQLList,
+  GraphQLInputObjectType,
+  GraphQLNonNull,
 } from 'graphql'
 
 const users = [
@@ -18,6 +20,7 @@ const users = [
     email: 'roberta08@gmail.com'
   }
 ]
+
 const User =  new GraphQLObjectType({
   name: 'User',
   fields: {
@@ -42,6 +45,33 @@ const User =  new GraphQLObjectType({
   }
 })
 
+const mutationType = new GraphQLObjectType({
+  name: 'Mutation',
+  description: 'First mutation example',
+  fields: {
+    createUser: {
+      type: User,
+      args: {
+        id: {
+          type: new GraphQLNonNull(GraphQLInt)
+        },
+        name: {
+          type: new GraphQLNonNull(GraphQLString)
+        },
+        email: {
+          type: new GraphQLNonNull(GraphQLString)
+        },
+      },
+      resolve: (_, args: { id: number, name: string, email: string }) => {
+        console.log(args);
+        const newUser = args;
+        users.push(newUser);
+        return newUser;
+      }
+    }
+  }
+})
+
 export const Schema = new GraphQLSchema({
   query: new GraphQLObjectType({
     name: 'RootQueryType',
@@ -59,6 +89,6 @@ export const Schema = new GraphQLSchema({
         }
       },
     }
-    
-  })
+  }),
+  mutation: mutationType
 })

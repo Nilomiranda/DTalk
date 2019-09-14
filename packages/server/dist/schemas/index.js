@@ -1,4 +1,4 @@
-import { GraphQLSchema, GraphQLObjectType, GraphQLString, GraphQLInt, GraphQLList, } from 'graphql';
+import { GraphQLSchema, GraphQLObjectType, GraphQLString, GraphQLInt, GraphQLList, GraphQLNonNull, } from 'graphql';
 const users = [
     {
         id: 1,
@@ -34,6 +34,32 @@ const User = new GraphQLObjectType({
         },
     }
 });
+const mutationType = new GraphQLObjectType({
+    name: 'Mutation',
+    description: 'First mutation example',
+    fields: {
+        createUser: {
+            type: User,
+            args: {
+                id: {
+                    type: new GraphQLNonNull(GraphQLInt)
+                },
+                name: {
+                    type: new GraphQLNonNull(GraphQLString)
+                },
+                email: {
+                    type: new GraphQLNonNull(GraphQLString)
+                },
+            },
+            resolve: (_, args) => {
+                console.log(args);
+                const newUser = args;
+                users.push(newUser);
+                return newUser;
+            }
+        }
+    }
+});
 export const Schema = new GraphQLSchema({
     query: new GraphQLObjectType({
         name: 'RootQueryType',
@@ -51,5 +77,6 @@ export const Schema = new GraphQLSchema({
                 }
             },
         }
-    })
+    }),
+    mutation: mutationType
 });
