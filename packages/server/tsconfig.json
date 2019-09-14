@@ -1,6 +1,6 @@
 {
   "compileOnSave": true,
-  "version":  "3.6.3",
+  "version": "3.6.3",
   "compilerOptions": {
     "outDir": "./dist",
     "watch": true,
@@ -10,7 +10,7 @@
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "allowSyntheticDefaultImports": true,
+    "allowSyntheticDefaultImports": true
     // "typeRoots": ["../../node_modules/@types"]
   },
   // "files": ["src/@types/graphql.d.ts"],

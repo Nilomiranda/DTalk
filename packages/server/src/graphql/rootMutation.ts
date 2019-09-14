@@ -7,7 +7,7 @@ const Mutation = new GraphQLObjectType({
   name: 'Mutation',
   description: 'First mutation example',
   fields: {
-    createUser,
+    createUser: createUser(),
   },
 });
 
