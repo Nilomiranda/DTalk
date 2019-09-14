@@ -1,4 +1,4 @@
-import { GraphQLObjectType } from "graphql";
+import { GraphQLObjectType } from 'graphql';
 /** USER */
 import { createUser } from './users/mutations';
 const Mutation = new GraphQLObjectType({
@@ -6,6 +6,6 @@ const Mutation = new GraphQLObjectType({
     description: 'First mutation example',
     fields: {
         createUser,
-    }
+    },
 });
 export default Mutation;
