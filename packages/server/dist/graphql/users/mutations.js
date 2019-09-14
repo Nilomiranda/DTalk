@@ -16,6 +16,32 @@ function generateHashedPassword(password) {
         return hashedPassword;
     });
 }
+function isEmailInUse(args, context) {
+    return __awaiter(this, void 0, void 0, function* () {
+        /** checks if email is already in use */
+        const data = yield context.prisma
+            .users({ where: { email: args.email } })
+            .catch(err => console.log(err));
+        const foundEmail = data.find(user => user.email === args.email);
+        console.log(foundEmail);
+        if (foundEmail) {
+            return true;
+        }
+        return false;
+    });
+}
+function isUsernameAvailable(args, context) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const data = yield context.prisma
+            .users({ where: { name: args.name } })
+            .catch(err => console.log(err));
+        const foundUser = data.find(user => user.name === args.name);
+        if (foundUser) {
+            return true;
+        }
+        return false;
+    });
+}
 export const createUser = () => {
     return {
         type: User,
@@ -32,7 +58,12 @@ export const createUser = () => {
         },
         resolve: (root, args, context) => __awaiter(void 0, void 0, void 0, function* () {
             const hashPass = yield generateHashedPassword(args.password);
-            console.log(hashPass);
+            if (yield isEmailInUse(args, context)) {
+                throw new Error('Email already in use');
+            }
+            if (yield isUsernameAvailable(args, context)) {
+                throw new Error('This username is not available anymore 😢. Please use another one');
+            }
             return context.prisma.createUser(Object.assign(Object.assign({}, args), { password: hashPass }));
         }),
     };
