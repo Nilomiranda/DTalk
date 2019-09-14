@@ -7,7 +7,7 @@ import {
 
 // schemas
 import User from './users/schema';
-import Mutation from './mutations';
+import Mutation from './rootMutation';
 
 export const Schema = new GraphQLSchema({
   query: new GraphQLObjectType({

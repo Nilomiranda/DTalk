@@ -1,7 +1,7 @@
 import Router from 'koa-router';
 import graphqlHTTP  from 'koa-graphql';
 
-import { Schema } from './graphql';
+import { Schema } from './graphql/rootSchemas';
 
 import { prisma } from './prisma/generated/prisma-client';
 
