@@ -10,7 +10,8 @@
     "graphql-import": "^0.7.1",
     "koa": "^2.8.1",
     "koa-router": "^7.4.0",
-    "nodemon": "^1.19.2"
+    "nodemon": "^1.19.2",
+    "prisma-client-lib": "^1.34.8"
   },
   "devDependencies": {
     "@babel/core": "^7.6.0",

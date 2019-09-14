@@ -4,7 +4,7 @@
   "compilerOptions": {
     "outDir": "./dist",
     "watch": true,
-    "lib": ["es5", "es6"],
+    "lib": ["es5", "es6", "dom"],
     "target": "es6",
     "module": "es2015",
     "moduleResolution": "node",

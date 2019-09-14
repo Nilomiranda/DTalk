@@ -1,21 +1,9 @@
-import { GraphQLSchema, GraphQLObjectType, GraphQLString, GraphQLInt, GraphQLList, GraphQLNonNull, } from 'graphql';
-const users = [
-    {
-        id: 1,
-        name: 'Danilo Miranda',
-        email: 'me@danmiranda.io'
-    },
-    {
-        id: 2,
-        name: 'Roberta Thaynara Prates Rangel',
-        email: 'roberta08@gmail.com'
-    }
-];
+import { GraphQLSchema, GraphQLObjectType, GraphQLString, GraphQLList, GraphQLNonNull, } from 'graphql';
 const User = new GraphQLObjectType({
     name: 'User',
     fields: {
         id: {
-            type: GraphQLInt,
+            type: GraphQLString,
             resolve(parent) {
                 return parent.id;
             }
@@ -32,6 +20,12 @@ const User = new GraphQLObjectType({
                 return parent.email;
             }
         },
+        createdAt: {
+            type: GraphQLString,
+            resolve(parent) {
+                return parent.createdAt;
+            }
+        }
     }
 });
 const mutationType = new GraphQLObjectType({
@@ -41,9 +35,6 @@ const mutationType = new GraphQLObjectType({
         createUser: {
             type: User,
             args: {
-                id: {
-                    type: new GraphQLNonNull(GraphQLInt)
-                },
                 name: {
                     type: new GraphQLNonNull(GraphQLString)
                 },
@@ -51,11 +42,8 @@ const mutationType = new GraphQLObjectType({
                     type: new GraphQLNonNull(GraphQLString)
                 },
             },
-            resolve: (_, args) => {
-                console.log(args);
-                const newUser = args;
-                users.push(newUser);
-                return newUser;
+            resolve: (root, args, context) => {
+                return context.prisma.createUser(args);
             }
         }
     }
@@ -72,8 +60,8 @@ export const Schema = new GraphQLSchema({
             },
             users: {
                 type: new GraphQLList(User),
-                resolve() {
-                    return users;
+                resolve(root, args, context, info) {
+                    return context.prisma.users();
                 }
             },
         }
