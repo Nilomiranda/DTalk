@@ -9,6 +9,7 @@
     "bcrypt": "^3.0.6",
     "graphql": "^14.5.4",
     "graphql-import": "^0.7.1",
+    "jsonwebtoken": "^8.5.1",
     "koa": "^2.8.1",
     "koa-router": "^7.4.0",
     "nodemon": "^1.19.2",
