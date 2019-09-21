@@ -6,7 +6,6 @@ const Session = new GraphQLObjectType({
         user: {
             type: User,
             resolve(parent) {
-                console.log(parent);
                 return parent.user;
             },
         },
