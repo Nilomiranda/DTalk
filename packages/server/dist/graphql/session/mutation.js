@@ -12,10 +12,11 @@ import { GraphQLString, GraphQLNonNull } from 'graphql';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import auth from '../../config/auth';
+import isUserLogged from '../../middlewares/auth';
 function login(root, args, context) {
     return __awaiter(this, void 0, void 0, function* () {
         const { password } = args;
-        const user = yield context.prisma.user({ email: args.email });
+        const user = yield context().prisma.user({ email: args.email });
         if (!user) {
             throw new Error('User does not exist. Please check the informed email');
         }
@@ -32,6 +33,9 @@ function login(root, args, context) {
         };
     });
 }
+function test(root, args, context) {
+    isUserLogged(context);
+}
 export const userLogin = () => {
     return {
         type: Session,
@@ -44,5 +48,16 @@ export const userLogin = () => {
             },
         },
         resolve: login,
+    };
+};
+export const testSession = () => {
+    return {
+        type: Session,
+        args: {
+            text: {
+                type: new GraphQLNonNull(GraphQLString),
+            },
+        },
+        resolve: test,
     };
 };
