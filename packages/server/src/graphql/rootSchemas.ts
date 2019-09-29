@@ -26,12 +26,6 @@ export const Schema = new GraphQLSchema({
           return context.prisma.users();
         },
       },
-      sessions: {
-        type: new GraphQLList(Session),
-        resolve(root, args, context, info) {
-          return context.prisma.session();
-        },
-      },
     },
   }),
   mutation: Mutation,

@@ -3,6 +3,7 @@ import { GraphQLObjectType } from 'graphql';
 /** USER */
 import { createUser } from './users/mutations';
 import { userLogin } from './session/mutation';
+import { testSession } from './session/mutation';
 
 const Mutation = new GraphQLObjectType({
   name: 'Mutation',
@@ -10,6 +11,7 @@ const Mutation = new GraphQLObjectType({
   fields: {
     createUser: createUser(),
     userLogin: userLogin(),
+    testSession: testSession(),
   },
 });
 

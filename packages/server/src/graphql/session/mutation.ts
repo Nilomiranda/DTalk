@@ -4,10 +4,11 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import auth from '../../config/auth';
 import { User } from '../../prisma/generated/prisma-client';
+import isUserLogged from '../../middlewares/auth';
 
 async function login(root, args, context) {
   const { password } = args;
-  const user: User = await context.prisma.user({ email: args.email });
+  const user: User = await context().prisma.user({ email: args.email });
 
   if (!user) {
     throw new Error('User does not exist. Please check the informed email');
@@ -32,6 +33,10 @@ async function login(root, args, context) {
   };
 }
 
+function test(root, args, context) {
+  isUserLogged(context);
+}
+
 export const userLogin = () => {
   return {
     type: Session,
@@ -44,5 +49,17 @@ export const userLogin = () => {
       },
     },
     resolve: login,
+  };
+};
+
+export const testSession = () => {
+  return {
+    type: Session,
+    args: {
+      text: {
+        type: new GraphQLNonNull(GraphQLString),
+      },
+    },
+    resolve: test,
   };
 };
