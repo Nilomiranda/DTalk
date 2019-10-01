@@ -1,11 +1,16 @@
 {
   "private": true,
-  "workspaces": [
-    "packages/client",
-    "packages/server"
-  ],
+  "workspaces": {
+    "packages": [
+      "packages/client",
+      "packages/server",
+      "packages/mobile"
+    ],
+    "nohoist": ["**/react-native", "**/react-native/**"]
+  },
   "scripts": {
     "start:server": "yarn workspace server nodemon --exec babel-node dist/index.js",
-    "start:web": "yarn workspace client yarn start"
+    "start:web": "yarn workspace client yarn start",
+    "start:mobile:ios": "yarn workspace mobile ios"
   }
 }

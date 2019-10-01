@@ -1,8 +1,8 @@
 Arguments: 
-  /Users/danilomiranda/.nvm/versions/node/v12.8.1/bin/node /usr/local/Cellar/yarn/1.15.2/libexec/bin/yarn.js start:dev
+  /Users/danilomiranda/.nvm/versions/node/v12.8.1/bin/node /usr/local/Cellar/yarn/1.15.2/libexec/bin/yarn.js install
 
 PATH: 
-  /Users/danilomiranda/.nvm/versions/node/v12.8.1/bin:/Users/danilomiranda/Downloads/google-cloud-sdk/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/share/dotnet:/opt/X11/bin:~/.dotnet/tools:/Library/Frameworks/Mono.framework/Versions/Current/Commands:/Users/danilomiranda/.nvm/versions/node/v12.8.1/bin:/Users/danilomiranda/Downloads/google-cloud-sdk/bin
+  /Users/danilomiranda/.nvm/versions/node/v12.8.1/bin:/Users/danilomiranda/Downloads/google-cloud-sdk/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/share/dotnet:/opt/X11/bin:~/.dotnet/tools:/Library/Frameworks/Mono.framework/Versions/Current/Commands
 
 Yarn version: 
   1.15.2
@@ -14,7 +14,7 @@ Platform:
   darwin x64
 
 Trace: 
-  SyntaxError: /Users/danilomiranda/Desktop/PROJECTS/social-media/DTalk/package.json: Unexpected token } in JSON at position 244
+  SyntaxError: /Users/danilomiranda/Desktop/PROJECTS/social-media/DTalk/package.json: Unexpected token ] in JSON at position 110
       at JSON.parse (<anonymous>)
       at /usr/local/Cellar/yarn/1.15.2/libexec/lib/cli.js:1625:59
       at Generator.next (<anonymous>)
@@ -26,11 +26,13 @@ npm manifest:
     "private": true,
     "workspaces": [
       "packages/client",
-      "packages/server"
+      "packages/server",
+      "packages/mobile",
     ],
     "scripts": {
       "start:server": "yarn workspace server nodemon --exec babel-node dist/index.js",
       "start:web": "yarn workspace client yarn start",
+      "start:mobile:ios": "yarn workspace client react-native run-ios"
     }
   }
 
@@ -1503,6 +1505,13 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/@types/json-schema/-/json-schema-7.0.3.tgz#bdfd69d61e464dcc81b25159c270d75a73c1a636"
     integrity sha512-Il2DtDVRGDcqjDtE+rF8iqg1CArehSK84HZJCT7AMITlyXRBpuPhqGLDQMowraqqu1coEaimg4ZOqggt6L6L+A==
   
+  "@types/jsonwebtoken@^8.3.4":
+    version "8.3.4"
+    resolved "https://registry.yarnpkg.com/@types/jsonwebtoken/-/jsonwebtoken-8.3.4.tgz#93c10c3d0a04bf31a507f89803e7df90a7a90889"
+    integrity sha512-R0eiYPpbo6Jl/XtGwpg7vQlapd7D38gp0g9WMKOSFr/e2NUTN9Udd3ty7n+2yUpmHr2Fti+/BSc+KSQ8zPN+vg==
+    dependencies:
+      "@types/node" "*"
+  
   "@types/keygrip@*":
     version "1.0.1"
     resolved "https://registry.yarnpkg.com/@types/keygrip/-/keygrip-1.0.1.tgz#ff540462d2fb4d0a88441ceaf27d287b01c3d878"
@@ -1522,10 +1531,29 @@ Lockfile:
     dependencies:
       "@types/koa" "*"
   
+  "@types/koa-router@^7.0.42":
+    version "7.0.42"
+    resolved "https://registry.yarnpkg.com/@types/koa-router/-/koa-router-7.0.42.tgz#0e5c01d4d0a2873d402d432114f08372d7c50eb1"
+    integrity sha512-mggrNY7Ywwjt7QjaMAlbb1ixE+v7AFskOeyKdmZT/NvPVEAo48gYUxIcF8ILlMc3eg1bo6SxNoUcbxhTv7edrA==
+    dependencies:
+      "@types/koa" "*"
+  
   "@types/koa@*", "@types/koa@^2.0.46":
     version "2.0.49"
     resolved "https://registry.yarnpkg.com/@types/koa/-/koa-2.0.49.tgz#8ffc2ddbdd715a2c392a218c67e116cb07007234"
     integrity sha512-WQWpCH8O4Dslk8IcXfazff40aM1jXX7BQRbADIj/fKozVPu76P/wQE4sRe2SCWMn8yNkOcare2MkDrnZqLMkPQ==
+    dependencies:
+      "@types/accepts" "*"
+      "@types/cookies" "*"
+      "@types/http-assert" "*"
+      "@types/keygrip" "*"
+      "@types/koa-compose" "*"
+      "@types/node" "*"
+  
+  "@types/koa@^2.0.50":
+    version "2.0.50"
+    resolved "https://registry.yarnpkg.com/@types/koa/-/koa-2.0.50.tgz#c295cbbd59f4898e7a8794c0f2e42e60da83aab2"
+    integrity sha512-TcgOD2lh0EISSadAk1DOBYw7kNoY9XdeB3vEMOKiDDaTMYm+V54nyPsU7Ulb/htb5OBIR79RgTeCWntCcophLw==
     dependencies:
       "@types/accepts" "*"
       "@types/cookies" "*"
@@ -2560,6 +2588,14 @@ Lockfile:
     integrity sha1-pDAdOJtqQ/m2f/PKEaP2Y342Dp4=
     dependencies:
       tweetnacl "^0.14.3"
+  
+  bcrypt@^3.0.6:
+    version "3.0.6"
+    resolved "https://registry.yarnpkg.com/bcrypt/-/bcrypt-3.0.6.tgz#f607846df62d27e60d5e795612c4f67d70206eb2"
+    integrity sha512-taA5bCTfXe7FUjKroKky9EXpdhkVvhE5owfxfLYodbrAR1Ul3juLmIQmIQBK4L9a5BuUcE6cqmwT+Da20lF9tg==
+    dependencies:
+      nan "2.13.2"
+      node-pre-gyp "0.12.0"
   
   big.js@^5.2.2:
     version "5.2.2"
@@ -6709,7 +6745,7 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/jsonify/-/jsonify-0.0.0.tgz#2c74b6ee41d93ca51b7b5aaee8f503631d252a73"
     integrity sha1-LHS27kHZPKUbe1qu6PUDYx0lKnM=
   
-  jsonwebtoken@^8.3.0:
+  jsonwebtoken@^8.3.0, jsonwebtoken@^8.5.1:
     version "8.5.1"
     resolved "https://registry.yarnpkg.com/jsonwebtoken/-/jsonwebtoken-8.5.1.tgz#00e71e0b8df54c2121a1f26137df2280673bcc0d"
     integrity sha512-XjwVfRS6jTMsqYs0EsuJ4LGxXV14zQybNd4L2r0UvbVnSF9Af8x7p5MzbJ90Ioz/9TI41/hTCvznF/loiSzn8w==
@@ -7490,6 +7526,11 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/mute-stream/-/mute-stream-0.0.7.tgz#3075ce93bc21b8fab43e1bc4da7e8115ed1e7bab"
     integrity sha1-MHXOk7whuPq0PhvE2n6BFe0ee6s=
   
+  nan@2.13.2:
+    version "2.13.2"
+    resolved "https://registry.yarnpkg.com/nan/-/nan-2.13.2.tgz#f51dc7ae66ba7d5d55e1e6d4d8092e802c9aefe7"
+    integrity sha512-TghvYc72wlMGMVMluVo9WRJc0mB8KxxF/gZ4YYFy7V2ZQX9l7rgbPg7vjS9mt6U5HXODVFVI2bOduCzwOMv/lw==
+  
   nan@^2.12.1:
     version "2.14.0"
     resolved "https://registry.yarnpkg.com/nan/-/nan-2.14.0.tgz#7818f722027b2459a86f0295d434d1fc2336c52c"
@@ -7626,7 +7667,7 @@ Lockfile:
       shellwords "^0.1.1"
       which "^1.3.0"
   
-  node-pre-gyp@^0.12.0:
+  node-pre-gyp@0.12.0, node-pre-gyp@^0.12.0:
     version "0.12.0"
     resolved "https://registry.yarnpkg.com/node-pre-gyp/-/node-pre-gyp-0.12.0.tgz#39ba4bb1439da030295f899e3b520b7785766149"
     integrity sha512-4KghwV8vH5k+g2ylT+sLTjy5wmUOb9vPhnM8NHvRf9dHmnW/CndrFXy2aRPaPST6dugXSdHXfeaHQm77PIz/1A==
