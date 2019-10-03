@@ -6,7 +6,7 @@
       "packages/server",
       "packages/mobile"
     ],
-    "nohoist": ["**/react-native", "**/react-native/**"]
+    "nohoist": ["**/mobile", "**/mobile/**"]
   },
   "scripts": {
     "start:server": "yarn workspace server nodemon --exec babel-node dist/index.js",
