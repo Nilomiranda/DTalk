@@ -1,6 +1,7 @@
 /* eslint-disable react/prefer-stateless-function */
 import React, { Component } from 'react';
 import styled from 'styled-components/native';
+import propTypes from 'prop-types';
 
 import SignUpImg from '../../assets/img/sign-up.svg';
 
@@ -60,7 +61,9 @@ const CustomImg = styled(SignUpImg)`
 
 class SignUp extends Component {
   goToSignIn() {
-    const { navigate } = this.props.navigation;
+    const {
+      navigation: { navigate },
+    } = this.props;
 
     navigate('SignIn');
   }
@@ -98,5 +101,11 @@ class SignUp extends Component {
     );
   }
 }
+
+SignUp.propTypes = {
+  navigation: propTypes.shape({
+    navigate: propTypes.func.isRequired,
+  }).isRequired,
+};
 
 export default SignUp;
