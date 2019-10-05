@@ -1,7 +1,8 @@
 /* eslint-disable react/prefer-stateless-function */
 import React, { Component } from 'react';
 import styled from 'styled-components/native';
-import { Text } from 'react-native';
+
+import SignInImg from '../../assets/img/sign-in';
 
 const MainContainer = styled.View`
   align-items: center;
@@ -12,7 +13,7 @@ const MainContainer = styled.View`
 
 const TextInput = styled.TextInput`
   /* height: 40px; */
-  color: red;
+  color: #222;
   box-shadow: 5px 4px 15px rgba(0, 0, 0, 0.5);
   border-radius: 6px;
   background: #fff;
@@ -53,15 +54,25 @@ const TextLink = styled.Text`
   margin-top: 25px;
 `;
 
+const CustomImg = styled(SignInImg)`
+  margin-bottom: 56px;
+`;
+
 class SignIn extends Component {
   render() {
     return (
       <MainContainer>
+        <CustomImg width={228} height={178} />
+
         <InputLabel>Email</InputLabel>
-        <TextInput placeholder="you@domain.com" />
+        <TextInput placeholder="you@domain.com" autoCapitalize="none" />
 
         <InputLabel>Password</InputLabel>
-        <TextInput placeholder="********" />
+        <TextInput
+          placeholder="********"
+          autoCapitalize="none"
+          secureTextEntry
+        />
 
         <SubmitButton>
           <SubmitButtonLabel>Sign In</SubmitButtonLabel>
