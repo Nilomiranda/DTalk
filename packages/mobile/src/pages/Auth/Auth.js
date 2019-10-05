@@ -1,6 +1,6 @@
 import React from 'react';
-import {createAppContainer} from 'react-navigation';
-import {createMaterialTopTabNavigator} from 'react-navigation-tabs';
+import { createAppContainer } from 'react-navigation';
+import { createMaterialTopTabNavigator } from 'react-navigation-tabs';
 
 import SignIn from './SignIn';
 import SignUp from './SignUp';
@@ -39,7 +39,7 @@ const TabNavigator = createMaterialTopTabNavigator(
       },
       tabStyle: {
         shadowColor: '#FFF',
-        shadowOffset: {height: 0, width: 0},
+        shadowOffset: { height: 0, width: 0 },
       },
     },
   },

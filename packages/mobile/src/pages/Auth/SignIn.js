@@ -1,8 +1,8 @@
 /* eslint-disable react/prefer-stateless-function */
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import styled from 'styled-components/native';
 
-import SignInImg from '../../assets/img/sign-in';
+import SignInImg from '../../assets/img/sign-in.svg';
 
 const MainContainer = styled.View`
   align-items: center;
