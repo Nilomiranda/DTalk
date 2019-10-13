@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
+  "scripts": {
+    "update:schema": "babel-node ./scripts/updateSchema.ts"
+  },
   "dependencies": {
     "@types/node": "^12.7.5",
     "apollo-server-koa": "^2.9.3",

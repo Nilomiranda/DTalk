@@ -1,0 +1,29 @@
+schema {
+  query: RootQueryType
+  mutation: Mutation
+}
+
+"""First mutation example"""
+type Mutation {
+  createUser(name: String!, email: String!, password: String!): User
+  userLogin(email: String!, password: String!): Schema
+  testSession(text: String!): Schema
+}
+
+type RootQueryType {
+  info: String
+  users: [User]
+}
+
+type Schema {
+  user: User
+  token: String
+}
+
+type User {
+  id: ID
+  name: String
+  email: String
+  password: String
+  createdAt: String
+}
