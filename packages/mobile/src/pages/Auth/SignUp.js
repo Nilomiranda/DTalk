@@ -1,6 +1,7 @@
 /* eslint-disable class-methods-use-this */
 /* eslint-disable react/prefer-stateless-function */
 import React, { Component } from 'react';
+import { Alert } from 'react-native';
 import styled from 'styled-components/native';
 import propTypes from 'prop-types';
 import { graphql, commitMutation } from 'react-relay';
@@ -62,14 +63,24 @@ const CustomImg = styled(SignUpImg)`
   margin-bottom: 33px;
 `;
 
+const ErrorMsg = styled.Text`
+  color: #f45;
+  font-weight: bold;
+  font-size: 12px;
+  margin-top: -20px;
+  margin-bottom: 30px;
+`;
+
 class SignUp extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
+      name: '',
       email: '',
       password: '',
       confirmPassword: '',
+      passwordsUnmatch: false,
     };
   }
 
@@ -81,7 +92,21 @@ class SignUp extends Component {
     navigate('SignIn');
   }
 
+  validateForm() {
+    const {
+ name, email, password, confirmPassword
+ } = this.state;
+
+    if (password !== confirmPassword) {
+      this.setState({ passwordsUnmatch: true });
+    }
+  }
+
   createNewUser() {
+    const { name, email, password } = this.state;
+
+    this.validateForm();
+
     const mutation = graphql`
       mutation SignUpMutation(
         $name: String!
@@ -99,23 +124,44 @@ class SignUp extends Component {
     return commitMutation(environment, {
       mutation,
       variables: {
-        name: 'Lord Voldemort',
-        email: 'voldemort@gmail.com',
-        password: '123456',
+        name,
+        email,
+        password,
       },
+      onCompleted: (res, err) => {
+        if (err) {
+          const { message } = err[0];
+          Alert.alert(
+            'Sign-up error',
+            'This email is already in use by another account',
+            [{ text: 'OK', onPress: () => this.setState({ email: '' }) }],
+          );
+        }
+      },
+      onError: (err) => alert(err),
     });
   }
 
   render() {
+    const { passwordsUnmatch } = this.state;
+
     return (
       <MainContainer>
-        <CustomImg width={168} height={135} />
+        {/* <CustomImg width={168} height={135} /> */}
+
+        <InputLabel>Name</InputLabel>
+        <TextInput
+          placeholder="Your Name"
+          autoCapitalize="none"
+          onChangeText={(text) => this.setState({ name: text })}
+        />
 
         <InputLabel>Email</InputLabel>
         <TextInput
           placeholder="you@domain.com"
           autoCapitalize="none"
           onChangeText={(text) => this.setState({ email: text })}
+          value={this.state.email}
         />
 
         <InputLabel>Password</InputLabel>
@@ -125,6 +171,7 @@ class SignUp extends Component {
           secureTextEntry
           onChangeText={(text) => this.setState({ password: text })}
         />
+        {passwordsUnmatch ? <ErrorMsg>Passwords must match</ErrorMsg> : <></>}
 
         <InputLabel>Confirm password</InputLabel>
         <TextInput
@@ -133,6 +180,7 @@ class SignUp extends Component {
           secureTextEntry
           onChangeText={(text) => this.setState({ confirmPassword: text })}
         />
+        {passwordsUnmatch ? <ErrorMsg>Passwords must match</ErrorMsg> : <></>}
 
         <SubmitButton onPress={() => this.createNewUser()}>
           <SubmitButtonLabel>Sign Up</SubmitButtonLabel>
