@@ -7,7 +7,8 @@
     "ios": "react-native run-ios --simulator='iPhone 11'",
     "start": "react-native start",
     "test": "jest",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "relay": "relay-compiler --src ./src --schema ./src/data/schema.graphql"
   },
   "dependencies": {
     "metro-config": "^0.56.0",
@@ -21,6 +22,8 @@
     "react-navigation": "^4.0.10",
     "react-navigation-stack": "^1.9.3",
     "react-navigation-tabs": "^2.5.5",
+    "react-relay": "^6.0.0",
+    "relay-runtime": "^6.0.0",
     "styled-components": "^4.4.0"
   },
   "devDependencies": {
@@ -28,16 +31,21 @@
     "@babel/runtime": "7.6.2",
     "@react-native-community/eslint-config": "0.0.3",
     "babel-jest": "24.9.0",
+    "babel-plugin-relay": "^6.0.0",
     "eslint": "^6.5.1",
     "eslint-config-airbnb": "^18.0.1",
     "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-react": "^7.16.0",
     "eslint-plugin-react-hooks": "^1.7.0",
+    "graphql": "^14.5.8",
     "jest": "24.9.0",
     "metro-react-native-babel-preset": "0.51.1",
     "react-native-svg-transformer": "^0.13.0",
-    "react-test-renderer": "16.9.0"
+    "react-test-renderer": "16.9.0",
+    "reactotron-react-native": "^4.0.2",
+    "relay-compiler": "^6.0.0",
+    "relay-config": "^6.0.0"
   },
   "jest": {
     "preset": "react-native"
