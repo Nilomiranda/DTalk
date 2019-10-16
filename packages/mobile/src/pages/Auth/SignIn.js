@@ -1,11 +1,12 @@
 /* eslint-disable react/prefer-stateless-function */
 import React, {Component} from 'react';
+import {ScrollView} from 'react-native';
 import styled from 'styled-components/native';
 
 import SignInImg from '../../assets/img/sign-in.svg';
 
-const MainContainer = styled.View`
-  align-items: center;
+const MainContainer = styled.ScrollView`
+  /* align-items: center; */
   /* justify-content: space-between; */
   padding: 50px 40px;
   flex: 1;
@@ -61,25 +62,27 @@ const CustomImg = styled(SignInImg)`
 class SignIn extends Component {
   render() {
     return (
-      <MainContainer>
-        <CustomImg width={228} height={178} />
+      <ScrollView>
+        <MainContainer bounces={false}>
+          <CustomImg width={228} height={178} />
 
-        <InputLabel>Email</InputLabel>
-        <TextInput placeholder="you@domain.com" autoCapitalize="none" />
+          <InputLabel>Email</InputLabel>
+          <TextInput placeholder="you@domain.com" autoCapitalize="none" />
 
-        <InputLabel>Password</InputLabel>
-        <TextInput
-          placeholder="********"
-          autoCapitalize="none"
-          secureTextEntry
-        />
+          <InputLabel>Password</InputLabel>
+          <TextInput
+            placeholder="********"
+            autoCapitalize="none"
+            secureTextEntry
+          />
 
-        <SubmitButton>
-          <SubmitButtonLabel>Sign In</SubmitButtonLabel>
-        </SubmitButton>
+          <SubmitButton>
+            <SubmitButtonLabel>Sign In</SubmitButtonLabel>
+          </SubmitButton>
 
-        <TextLink>Forgot password? Click here</TextLink>
-      </MainContainer>
+          <TextLink>Forgot password? Click here</TextLink>
+        </MainContainer>
+      </ScrollView>
     );
   }
 }

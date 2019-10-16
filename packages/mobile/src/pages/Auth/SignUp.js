@@ -1,7 +1,7 @@
 /* eslint-disable class-methods-use-this */
 /* eslint-disable react/prefer-stateless-function */
 import React, { Component } from 'react';
-import { Alert } from 'react-native';
+import { Alert, ScrollView } from 'react-native';
 import styled from 'styled-components/native';
 import propTypes from 'prop-types';
 import { graphql, commitMutation } from 'react-relay';
@@ -10,7 +10,7 @@ import environment from '../../config/relayEnvironment';
 import SignUpImg from '../../assets/img/sign-up.svg';
 
 const MainContainer = styled.View`
-  align-items: center;
+  /* align-items: center; */
   /* justify-content: space-between; */
   padding: 50px 40px;
   flex: 1;
@@ -93,9 +93,9 @@ class SignUp extends Component {
   }
 
   validateForm() {
-    const {
- name, email, password, confirmPassword
- } = this.state;
+    const { 
+name, email, password, confirmPassword 
+} = this.state;
 
     if (password !== confirmPassword) {
       this.setState({ passwordsUnmatch: true });
@@ -131,65 +131,64 @@ class SignUp extends Component {
       onCompleted: (res, err) => {
         if (err) {
           const { message } = err[0];
-          Alert.alert(
-            'Sign-up error',
-            'This email is already in use by another account',
-            [{ text: 'OK', onPress: () => this.setState({ email: '' }) }],
-          );
+          Alert.alert('Sign-up error', message, [
+            { text: 'OK', onPress: () => this.setState({ email: '' }) },
+          ]);
         }
       },
-      onError: (err) => alert(err),
     });
   }
 
   render() {
-    const { passwordsUnmatch } = this.state;
+    const { email, passwordsUnmatch } = this.state;
 
     return (
-      <MainContainer>
-        {/* <CustomImg width={168} height={135} /> */}
+      <ScrollView>
+        <MainContainer>
+          <CustomImg width={168} height={135} />
 
-        <InputLabel>Name</InputLabel>
-        <TextInput
-          placeholder="Your Name"
-          autoCapitalize="none"
-          onChangeText={(text) => this.setState({ name: text })}
-        />
+          <InputLabel>Name</InputLabel>
+          <TextInput
+            placeholder="Your Name"
+            autoCapitalize="none"
+            onChangeText={(text) => this.setState({ name: text })}
+          />
 
-        <InputLabel>Email</InputLabel>
-        <TextInput
-          placeholder="you@domain.com"
-          autoCapitalize="none"
-          onChangeText={(text) => this.setState({ email: text })}
-          value={this.state.email}
-        />
+          <InputLabel>Email</InputLabel>
+          <TextInput
+            placeholder="you@domain.com"
+            autoCapitalize="none"
+            onChangeText={(text) => this.setState({ email: text })}
+            value={email}
+          />
 
-        <InputLabel>Password</InputLabel>
-        <TextInput
-          placeholder="********"
-          autoCapitalize="none"
-          secureTextEntry
-          onChangeText={(text) => this.setState({ password: text })}
-        />
-        {passwordsUnmatch ? <ErrorMsg>Passwords must match</ErrorMsg> : <></>}
+          <InputLabel>Password</InputLabel>
+          <TextInput
+            placeholder="********"
+            autoCapitalize="none"
+            secureTextEntry
+            onChangeText={(text) => this.setState({ password: text })}
+          />
+          {passwordsUnmatch ? <ErrorMsg>Passwords must match</ErrorMsg> : <></>}
 
-        <InputLabel>Confirm password</InputLabel>
-        <TextInput
-          placeholder="********"
-          autoCapitalize="none"
-          secureTextEntry
-          onChangeText={(text) => this.setState({ confirmPassword: text })}
-        />
-        {passwordsUnmatch ? <ErrorMsg>Passwords must match</ErrorMsg> : <></>}
+          <InputLabel>Confirm password</InputLabel>
+          <TextInput
+            placeholder="********"
+            autoCapitalize="none"
+            secureTextEntry
+            onChangeText={(text) => this.setState({ confirmPassword: text })}
+          />
+          {passwordsUnmatch ? <ErrorMsg>Passwords must match</ErrorMsg> : <></>}
 
-        <SubmitButton onPress={() => this.createNewUser()}>
-          <SubmitButtonLabel>Sign Up</SubmitButtonLabel>
-        </SubmitButton>
+          <SubmitButton onPress={() => this.createNewUser()}>
+            <SubmitButtonLabel>Sign Up</SubmitButtonLabel>
+          </SubmitButton>
 
-        <TextLink onPress={() => this.goToSignIn()}>
-          Forgot password? Click here
-        </TextLink>
-      </MainContainer>
+          <TextLink onPress={() => this.goToSignIn()}>
+            Forgot password? Click here
+          </TextLink>
+        </MainContainer>
+      </ScrollView>
     );
   }
 }
