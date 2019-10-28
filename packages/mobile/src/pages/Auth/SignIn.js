@@ -1,6 +1,6 @@
 /* eslint-disable react/prefer-stateless-function */
-import React, {Component} from 'react';
-import {ScrollView} from 'react-native';
+import React, { Component } from 'react';
+import { ScrollView } from 'react-native';
 import styled from 'styled-components/native';
 
 import SignInImg from '../../assets/img/sign-in.svg';
