@@ -1,10 +1,11 @@
 /* eslint-disable class-methods-use-this */
 /* eslint-disable react/prefer-stateless-function */
 import React, { Component } from 'react';
-import { Alert, ScrollView } from 'react-native';
+import { ScrollView } from 'react-native';
 import styled from 'styled-components/native';
 import propTypes from 'prop-types';
 import { graphql, commitMutation } from 'react-relay';
+import { Snackbar } from 'react-native-paper';
 import environment from '../../config/relayEnvironment';
 
 import SignUpImg from '../../assets/img/sign-up.svg';
@@ -81,6 +82,8 @@ class SignUp extends Component {
       password: '',
       confirmPassword: '',
       passwordsUnmatch: false,
+      hasError: false,
+      errorMsg: '',
     };
   }
 
@@ -92,10 +95,14 @@ class SignUp extends Component {
     navigate('SignIn');
   }
 
+  dismissErrorToast() {
+    this.setState({ hasError: false, errorMsg: '' });
+  }
+
   validateForm() {
-    const { 
-name, email, password, confirmPassword 
-} = this.state;
+    const {
+ name, email, password, confirmPassword
+ } = this.state;
 
     if (password !== confirmPassword) {
       this.setState({ passwordsUnmatch: true });
@@ -131,16 +138,16 @@ name, email, password, confirmPassword
       onCompleted: (res, err) => {
         if (err) {
           const { message } = err[0];
-          Alert.alert('Sign-up error', message, [
-            { text: 'OK', onPress: () => this.setState({ email: '' }) },
-          ]);
+          this.setState({ hasError: true, errorMsg: message, email: '' });
         }
       },
     });
   }
 
   render() {
-    const { email, passwordsUnmatch } = this.state;
+    const { 
+email, passwordsUnmatch, errorMsg, hasError
+ } = this.state;
 
     return (
       <ScrollView>
@@ -188,6 +195,13 @@ name, email, password, confirmPassword
             Forgot password? Click here
           </TextLink>
         </MainContainer>
+        <Snackbar
+          visible={hasError}
+          duration={5000}
+          onDismiss={() => this.dismissErrorToast()}
+        >
+          {errorMsg}
+        </Snackbar>
       </ScrollView>
     );
   }
