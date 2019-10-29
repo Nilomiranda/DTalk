@@ -75,6 +75,8 @@ class SignIn extends Component {
     const {email, password} = this.state;
     const {navigation} = this.props;
 
+    console.tron.log(email);
+
     const mutation = graphql`
       mutation SignInMutation($email: String!, $password: String!) {
         userLogin(email: $email, password: $password) {

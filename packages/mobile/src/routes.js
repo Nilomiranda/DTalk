@@ -4,7 +4,7 @@ import { createStackNavigator } from 'react-navigation-stack';
 
 /** pages */
 import Auth from './pages/Auth/Auth';
-import NewsFeed from './pages/Social/NewsFeed';
+import Social from './pages/Social/Social';
 
 /** other components */
 import AuthHeader from './components/AuthHeader';
@@ -37,8 +37,8 @@ const MainNavigator = createStackNavigator(
         },
       },
     },
-    NewsFeed: {
-      screen: NewsFeed,
+    Social: {
+      screen: Social,
       navigationOptions: () => ({
         headerStyle: {
           height: 100,

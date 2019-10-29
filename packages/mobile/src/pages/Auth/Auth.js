@@ -1,10 +1,8 @@
-import React from 'react';
 import { createAppContainer } from 'react-navigation';
 import { createMaterialTopTabNavigator } from 'react-navigation-tabs';
 
 import SignIn from './SignIn';
 import SignUp from './SignUp';
-import ForgotPassword from './ForgotPassword';
 
 const TabNavigator = createMaterialTopTabNavigator(
   {
