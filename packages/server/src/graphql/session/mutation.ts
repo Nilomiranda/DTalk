@@ -8,7 +8,7 @@ import isUserLogged from '../../middlewares/auth';
 
 async function login(root, args, context) {
   const { password } = args;
-  const user: User = await context().prisma.user({ email: args.email });
+  const user: User = await context.prisma.user({ email: args.email });
 
   if (!user) {
     throw new Error('User does not exist. Please check the informed email');

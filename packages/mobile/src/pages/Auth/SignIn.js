@@ -1,7 +1,10 @@
 /* eslint-disable react/prefer-stateless-function */
-import React, { Component } from 'react';
-import { ScrollView } from 'react-native';
+import React, {Component} from 'react';
+import {ScrollView} from 'react-native';
 import styled from 'styled-components/native';
+import {Snackbar} from 'react-native-paper';
+import {graphql, commitMutation} from 'react-relay';
+import environment from '../../config/relayEnvironment';
 
 import SignInImg from '../../assets/img/sign-in.svg';
 
@@ -60,28 +63,78 @@ const CustomImg = styled(SignInImg)`
 `;
 
 class SignIn extends Component {
+  state = {
+    email: '',
+    password: '',
+    errorMsg: '',
+    hasError: false,
+  };
+
+  login() {
+    const {email, password} = this.state;
+
+    const mutation = graphql`
+      mutation SignInMutation($email: String!, $password: String!) {
+        userLogin(email: $email, password: $password) {
+          token
+        }
+      }
+    `;
+
+    return commitMutation(environment, {
+      mutation,
+      variables: {
+        email,
+        password,
+      },
+      onCompleted: (res, err) => {
+        if (err) {
+          const {message} = err[0];
+          this.setState({hasError: true, errorMsg: message, email: ''});
+        }
+      },
+    });
+  }
+
+  dismissErrorToast() {
+    this.setState({hasError: false, errorMsg: ''});
+  }
+
   render() {
+    const {email, password, hasError, errorMsg} = this.state;
+
     return (
       <ScrollView>
         <MainContainer bounces={false}>
           <CustomImg width={228} height={178} />
 
           <InputLabel>Email</InputLabel>
-          <TextInput placeholder="you@domain.com" autoCapitalize="none" />
+          <TextInput
+            placeholder="you@domain.com"
+            autoCapitalize="none"
+            onChangeText={text => this.setState({email: text})}
+          />
 
           <InputLabel>Password</InputLabel>
           <TextInput
             placeholder="********"
             autoCapitalize="none"
             secureTextEntry
+            onChangeText={text => this.setState({password: text})}
           />
 
-          <SubmitButton>
+          <SubmitButton onPress={() => this.login()}>
             <SubmitButtonLabel>Sign In</SubmitButtonLabel>
           </SubmitButton>
 
           <TextLink>Forgot password? Click here</TextLink>
         </MainContainer>
+        <Snackbar
+          visible={hasError}
+          onDismiss={() => this.dismissErrorToast()}
+          duration={7000}>
+          {errorMsg}
+        </Snackbar>
       </ScrollView>
     );
   }

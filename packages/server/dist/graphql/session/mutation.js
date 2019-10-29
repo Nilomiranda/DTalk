@@ -16,7 +16,7 @@ import isUserLogged from '../../middlewares/auth';
 function login(root, args, context) {
     return __awaiter(this, void 0, void 0, function* () {
         const { password } = args;
-        const user = yield context().prisma.user({ email: args.email });
+        const user = yield context.prisma.user({ email: args.email });
         if (!user) {
             throw new Error('User does not exist. Please check the informed email');
         }
