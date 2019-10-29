@@ -60,6 +60,7 @@ const TextLink = styled.Text`
 
 const CustomImg = styled(SignInImg)`
   margin-bottom: 56px;
+  align-self: center;
 `;
 
 class SignIn extends Component {
@@ -72,6 +73,7 @@ class SignIn extends Component {
 
   login() {
     const {email, password} = this.state;
+    const {navigation} = this.props;
 
     const mutation = graphql`
       mutation SignInMutation($email: String!, $password: String!) {
@@ -92,12 +94,23 @@ class SignIn extends Component {
           const {message} = err[0];
           this.setState({hasError: true, errorMsg: message, email: ''});
         }
+
+        if (!err) {
+          navigation.navigate('NewsFeed');
+        }
       },
     });
   }
 
   dismissErrorToast() {
     this.setState({hasError: false, errorMsg: ''});
+  }
+
+  gotToForgotPassword() {
+    console.tron.log('going to forgot password');
+    const {navigation} = this.props;
+
+    navigation.navigate('ForgotPassword');
   }
 
   render() {
@@ -127,7 +140,9 @@ class SignIn extends Component {
             <SubmitButtonLabel>Sign In</SubmitButtonLabel>
           </SubmitButton>
 
-          <TextLink>Forgot password? Click here</TextLink>
+          <TextLink onPress={() => this.gotToForgotPassword()}>
+            Forgot password? Click here
+          </TextLink>
         </MainContainer>
         <Snackbar
           visible={hasError}

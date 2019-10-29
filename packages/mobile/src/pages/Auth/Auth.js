@@ -4,7 +4,7 @@ import { createMaterialTopTabNavigator } from 'react-navigation-tabs';
 
 import SignIn from './SignIn';
 import SignUp from './SignUp';
-import AuthHeader from '../../components/AuthHeader';
+import ForgotPassword from './ForgotPassword';
 
 const TabNavigator = createMaterialTopTabNavigator(
   {
