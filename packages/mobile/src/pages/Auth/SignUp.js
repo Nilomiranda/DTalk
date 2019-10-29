@@ -62,6 +62,7 @@ const TextLink = styled.Text`
 
 const CustomImg = styled(SignUpImg)`
   margin-bottom: 33px;
+  align-self: center;
 `;
 
 const ErrorMsg = styled.Text`
