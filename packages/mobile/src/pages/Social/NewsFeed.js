@@ -1,6 +1,9 @@
 import React from 'react';
 import { Text } from 'react-native';
 
-const NewsFeed = () => <Text>Hello from news-feed</Text>;
+/** custom components */
+import TextPost from '../../components/TextPost';
+
+const NewsFeed = () => <TextPost />;
 
 export default NewsFeed;
