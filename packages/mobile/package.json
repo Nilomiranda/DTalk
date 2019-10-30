@@ -11,6 +11,7 @@
     "relay": "relay-compiler --src ./src --schema ./src/data/schema.graphql"
   },
   "dependencies": {
+    "@react-native-community/async-storage": "^1.6.2",
     "metro-config": "^0.56.0",
     "prop-types": "^15.7.2",
     "react": "16.9.0",

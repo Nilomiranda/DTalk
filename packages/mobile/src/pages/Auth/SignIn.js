@@ -3,6 +3,7 @@ import React, {Component} from 'react';
 import {ScrollView} from 'react-native';
 import styled from 'styled-components/native';
 import {Snackbar} from 'react-native-paper';
+import AsyncStorage from '@react-native-community/async-storage';
 import {graphql, commitMutation} from 'react-relay';
 import environment from '../../config/relayEnvironment';
 
@@ -71,6 +72,21 @@ class SignIn extends Component {
     hasError: false,
   };
 
+  componentDidMount() {
+    this.checkSession();
+  }
+
+  async checkSession() {
+    const {navigation} = this.props;
+
+    const token = await AsyncStorage.getItem('SESSION_TOKEN');
+    console.tron.log('TCL: SignIn -> checkSession -> token', token);
+
+    if (token) {
+      navigation.navigate('Social');
+    }
+  }
+
   login() {
     const {email, password} = this.state;
     const {navigation} = this.props;
@@ -96,9 +112,13 @@ class SignIn extends Component {
           const {message} = err[0];
           this.setState({hasError: true, errorMsg: message, email: ''});
         }
+        console.tron.log('TCL: SignIn -> login -> res', res.userLogin.token);
+        const {token} = res.userLogin;
+        console.tron.log('TCL: SignIn -> login -> token', token);
 
+        AsyncStorage.setItem('SESSION_TOKEN', token);
         if (!err) {
-          navigation.navigate('NewsFeed');
+          navigation.navigate('Social');
         }
       },
     });
