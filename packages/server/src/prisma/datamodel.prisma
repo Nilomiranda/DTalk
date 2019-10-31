@@ -4,4 +4,14 @@ type User {
   email: String! @unique
   password: String!
   createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+  textPosts: [TextPost]
+}
+
+type TextPost {
+  id: ID! @id
+  postedBy: User
+  content: String!
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
 }

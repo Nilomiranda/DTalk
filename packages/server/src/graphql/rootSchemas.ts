@@ -7,8 +7,10 @@ import {
 
 // schemas
 import User from './users/schema';
+import TextPost from './posts/text/schema';
+
+// mutations
 import Mutation from './rootMutation';
-import Session from './session/schema';
 
 export const Schema = new GraphQLSchema({
   query: new GraphQLObjectType({
@@ -25,6 +27,19 @@ export const Schema = new GraphQLSchema({
         resolve(root, args, context, info) {
           return context.prisma.users();
         },
+      },
+      posts: {
+        type: new GraphQLObjectType({
+          name: 'TextPosts',
+          fields: {
+            TextPost: {
+              type: TextPost,
+              resolve(root, args, context, info) {
+                return context.prisma.textPosts();
+              },
+            },
+          },
+        }),
       },
     },
   }),
