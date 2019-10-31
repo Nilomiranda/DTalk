@@ -10,6 +10,10 @@ export const models = [
     {
         name: "User",
         embedded: false
+    },
+    {
+        name: "TextPost",
+        embedded: false
     }
 ];
 /**

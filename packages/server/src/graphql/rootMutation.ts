@@ -4,6 +4,9 @@ import { GraphQLObjectType } from 'graphql';
 import { createUser } from './users/mutations';
 import { userLogin } from './session/mutation';
 import { testSession } from './session/mutation';
+import { postText } from './posts/text/mutation';
+
+/** POSTS */
 
 const Mutation = new GraphQLObjectType({
   name: 'Mutation',
@@ -12,6 +15,7 @@ const Mutation = new GraphQLObjectType({
     createUser: createUser(),
     userLogin: userLogin(),
     testSession: testSession(),
+    createNewTextPost: postText(),
   },
 });
 
