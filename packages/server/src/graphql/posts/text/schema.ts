@@ -1,18 +1,32 @@
-import { GraphQLObjectType, GraphQLString, GraphQLNonNull } from 'graphql';
+import {
+  GraphQLObjectType,
+  GraphQLString,
+  GraphQLNonNull,
+  GraphQLID,
+  GraphQLList,
+} from 'graphql';
 import User from '../../users/schema';
+import { Prisma } from '../../../prisma/generated/prisma-client';
 
 const TextPost = new GraphQLObjectType({
   name: 'TextPost',
   fields: {
-    user: {
-      type: GraphQLNonNull(User),
+    id: {
+      type: GraphQLID,
       resolve(parent) {
-        return parent.user;
+        return parent.id;
+      },
+    },
+    postedBy: {
+      type: User,
+      resolve(parent, args, context) {
+        return context.prisma.textPost({ id: parent.id }).postedBy();
       },
     },
     content: {
       type: GraphQLNonNull(GraphQLString),
-      resolve(parent) {
+      resolve(parent, args, context: Prisma | any) {
+        console.log('TCL: resolve -> content -> parent', parent);
         return parent.content;
       },
     },

@@ -16,8 +16,6 @@ async function isEmailInUse(args, context) {
 
   const foundEmail = data.find(user => user.email === args.email);
 
-  console.log(foundEmail);
-
   if (foundEmail) {
     return true;
   }

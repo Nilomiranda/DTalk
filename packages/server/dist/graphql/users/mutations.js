@@ -23,7 +23,6 @@ function isEmailInUse(args, context) {
             .users({ where: { email: args.email } })
             .catch(err => console.log(err));
         const foundEmail = data.find(user => user.email === args.email);
-        console.log(foundEmail);
         if (foundEmail) {
             return true;
         }

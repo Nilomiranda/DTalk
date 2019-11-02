@@ -1,4 +1,12 @@
-import { GraphQLObjectType, GraphQLString, GraphQLID } from 'graphql';
+import {
+  GraphQLObjectType,
+  GraphQLString,
+  GraphQLID,
+  GraphQLList,
+  GraphQLOutputType,
+} from 'graphql';
+import TextPost from '../posts/text/schema';
+import { Prisma } from '../../prisma/generated/prisma-client';
 
 const User = new GraphQLObjectType({
   name: 'User',
@@ -33,6 +41,14 @@ const User = new GraphQLObjectType({
         return parent.createdAt;
       },
     },
+    // textPosts: {
+    //   type: new GraphQLList(TextPost),
+    //   resolve(parent, args, context) {
+    //     console.log('TCL: resolve -> parentttttt', parent);
+    //     // return parent.textPosts;
+    //     return context.prisma.user({ id: parent.id }).textPosts();
+    //   },
+    // },
   },
 });
 

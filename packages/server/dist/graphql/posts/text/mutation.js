@@ -15,9 +15,7 @@ function createPost(root, args, context) {
         isUserLogged(context);
         const { userId } = context.prisma;
         const { content } = args;
-        const author = yield context.prisma
-            .user({ id: userId })
-            .$fragment(`{id, email}`);
+        const author = yield context.prisma.user({ id: userId });
         const newPost = yield context.prisma.createTextPost({
             content,
             postedBy: { connect: { id: author.id } },
