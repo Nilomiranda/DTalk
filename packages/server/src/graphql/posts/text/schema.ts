@@ -19,7 +19,9 @@ const TextPost = new GraphQLObjectType({
     },
     postedBy: {
       type: User,
+      // args: { id: { type: GraphQLString } },
       resolve(parent, args, context) {
+        console.log('TCL: resolve -> args', args.id);
         return context.prisma.textPost({ id: parent.id }).postedBy();
       },
     },

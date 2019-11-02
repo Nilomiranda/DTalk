@@ -44,8 +44,12 @@ export const Schema = new GraphQLSchema({
       // },
       posts: {
         type: new GraphQLList(TextPost),
+        args: { postedBy: { type: GraphQLString } },
         async resolve(root, args, context, info) {
-          return context.prisma.textPosts();
+          console.log('TCL: resolve -> args', args);
+          return context.prisma.textPosts({
+            where: { postedBy: { id: args.postedBy } },
+          });
         },
       },
     },
