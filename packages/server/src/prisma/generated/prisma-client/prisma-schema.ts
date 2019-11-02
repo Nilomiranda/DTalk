@@ -67,7 +67,7 @@ type Subscription {
 
 type TextPost {
   id: ID!
-  postedBy: User
+  postedBy: User!
   content: String!
   createdAt: DateTime!
   updatedAt: DateTime!
@@ -81,7 +81,7 @@ type TextPostConnection {
 
 input TextPostCreateInput {
   id: ID
-  postedBy: UserCreateOneWithoutTextPostsInput
+  postedBy: UserCreateOneWithoutTextPostsInput!
   content: String!
 }
 
@@ -187,7 +187,7 @@ input TextPostSubscriptionWhereInput {
 }
 
 input TextPostUpdateInput {
-  postedBy: UserUpdateOneWithoutTextPostsInput
+  postedBy: UserUpdateOneRequiredWithoutTextPostsInput
   content: String
 }
 
@@ -382,12 +382,10 @@ input UserUpdateManyMutationInput {
   password: String
 }
 
-input UserUpdateOneWithoutTextPostsInput {
+input UserUpdateOneRequiredWithoutTextPostsInput {
   create: UserCreateWithoutTextPostsInput
   update: UserUpdateWithoutTextPostsDataInput
   upsert: UserUpsertWithoutTextPostsInput
-  delete: Boolean
-  disconnect: Boolean
   connect: UserWhereUniqueInput
 }
 

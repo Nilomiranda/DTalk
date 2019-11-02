@@ -11,9 +11,7 @@ async function createPost(root, args, context: Prisma | any) {
   isUserLogged(context);
   const { userId } = context.prisma;
   const { content } = args;
-  const author: User = await context.prisma
-    .user({ id: userId })
-    .$fragment(`{id, email}`);
+  const author: User = await context.prisma.user({ id: userId });
   const newPost: Text = await (context as any).prisma.createTextPost({
     content,
     postedBy: { connect: { id: author.id } },

@@ -10,7 +10,7 @@ type User {
 
 type TextPost {
   id: ID! @id
-  postedBy: User
+  postedBy: User!
   content: String!
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
