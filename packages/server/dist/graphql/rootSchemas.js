@@ -29,26 +29,11 @@ export const Schema = new GraphQLSchema({
                     return context.prisma.users();
                 },
             },
-            // posts: {
-            //   type: new GraphQLObjectType({
-            //     name: 'TextPosts',
-            //     fields: {
-            //       TextPost: {
-            //         type: TextPost,
-            //         resolve(root, args, context, info) {
-            //           // console.log('TCL: resolve -> context', context);
-            //           return context.prisma.textPosts();
-            //         },
-            //       },
-            //     },
-            //   }),
-            // },
             posts: {
                 type: new GraphQLList(TextPost),
                 args: { postedBy: { type: GraphQLString } },
                 resolve(root, args, context, info) {
                     return __awaiter(this, void 0, void 0, function* () {
-                        console.log('TCL: resolve -> args', args);
                         return context.prisma.textPosts({
                             where: { postedBy: { id: args.postedBy } },
                         });

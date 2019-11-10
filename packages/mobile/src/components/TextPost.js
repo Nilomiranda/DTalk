@@ -50,22 +50,18 @@ const Content = styled.Text`
 
 class TextPost extends Component {
   render() {
+    const {author, content} = this.props;
+
     return (
       <MainContainer>
         <PostHeader>
           <AuthorImg source={require('../assets/img/avatar.jpeg')} />
           <Metadata>
-            <Author>Daniel Carter</Author>
+            <Author>{author}</Author>
             <PostDate>1 hour ago</PostDate>
           </Metadata>
         </PostHeader>
-        <Content>
-          Eos soleat doming dolorem id, no eripuit inermis albucius usu, est
-          erat eirmod ea. Veritus conceptam rationibus his ei, vim in errem
-          volutpat salutatus. Te error feugiat sea, tamquam consectetuer per te.
-          Ipsum deseruisse cum ut, tation consul dignissim sit ut. Facer essent
-          viderer vix ne, ei vel exerci tractatos tincidunt.
-        </Content>
+        <Content>{content}</Content>
       </MainContainer>
     );
   }

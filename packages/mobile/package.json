@@ -8,7 +8,7 @@
     "start": "react-native start",
     "test": "jest",
     "lint": "eslint .",
-    "relay": "relay-compiler --src ./src --schema ./src/data/schema.graphql"
+    "relay": "relay-compiler --src ./src --schema ./src/data/schema.graphql --watch"
   },
   "dependencies": {
     "@react-native-community/async-storage": "^1.6.2",

@@ -1,6 +1,9 @@
-import React from 'react';
-import { Image, Text, View } from 'react-native';
+import React, {userState, useEffect, useState} from 'react';
+import {View, Text} from 'react-native';
 import styled from 'styled-components/native';
+import {graphql, QueryRenderer, fetchQuery} from 'react-relay';
+
+import environment from '../../config/relayEnvironment';
 
 /** custom components */
 import TextPost from '../../components/TextPost';
@@ -28,23 +31,51 @@ const BadgeLabel = styled.Text`
   color: #eee;
 `;
 
-const NewsFeed = () => (
-  <View>
-    <FeedContainer>
-      <TextPost />
-      <TextPost />
-      <TextPost />
-      <TextPost />
-      <TextPost />
-    </FeedContainer>
-    <NewPostBadge>
-      {/* <Image
-        source={require('../../assets/img/new-post.jpg')}
-        style={{ width: 40, height: 40 }}
-      /> */}
-      <BadgeLabel>New Post</BadgeLabel>
-    </NewPostBadge>
-  </View>
-);
+const NewsFeed = () => {
+  const [posts, setPosts] = useState(['hello', 'bye']);
+
+  async function loadTextPosts() {
+    const query = graphql`
+      query NewsFeedQuery {
+        posts {
+          postedBy {
+            email
+            name
+            id
+          }
+          content
+        }
+      }
+    `;
+
+    return fetchQuery(environment, query);
+  }
+
+  useEffect(async () => {
+    const postsData = await loadTextPosts();
+    const {posts: loadedPosts} = postsData;
+    return setPosts(loadedPosts);
+  }, []);
+
+  return (
+    <View>
+      <FeedContainer>
+        {posts.length > 0 ? (
+          posts.map(post => (
+            <TextPost
+              author={post.postedBy && post.postedBy.name}
+              content={post.content}
+            />
+          ))
+        ) : (
+          <Text>Loading...</Text>
+        )}
+      </FeedContainer>
+      <NewPostBadge>
+        <BadgeLabel>New Post</BadgeLabel>
+      </NewPostBadge>
+    </View>
+  );
+};
 
 export default NewsFeed;
