@@ -8,16 +8,24 @@ type Mutation {
   createUser(name: String!, email: String!, password: String!): User
   userLogin(email: String!, password: String!): Schema
   testSession(text: String!): Schema
+  createNewTextPost(content: String!): TextPost
 }
 
 type RootQueryType {
   info: String
   users: [User]
+  posts(postedBy: String): [TextPost]
 }
 
 type Schema {
   user: User
   token: String
+}
+
+type TextPost {
+  id: ID
+  postedBy: User
+  content: String!
 }
 
 type User {

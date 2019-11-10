@@ -3,7 +3,6 @@ import {
   GraphQLString,
   GraphQLNonNull,
   GraphQLID,
-  GraphQLList,
 } from 'graphql';
 import User from '../../users/schema';
 import { Prisma } from '../../../prisma/generated/prisma-client';

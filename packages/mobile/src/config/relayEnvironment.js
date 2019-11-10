@@ -1,6 +1,4 @@
-import { 
-Environment, Network, RecordSource, Store 
-} from 'relay-runtime';
+import {Environment, Network, RecordSource, Store} from 'relay-runtime';
 
 function fetchQuery(operation, variables) {
   return fetch('http://localhost:3333/graphiql', {
@@ -12,7 +10,7 @@ function fetchQuery(operation, variables) {
       query: operation.text,
       variables,
     }),
-  }).then((res) => res.json());
+  }).then(res => res.json());
 }
 
 const environment = new Environment({
