@@ -17,7 +17,14 @@ async function fetchQuery(operation, variables) {
       query: operation.text,
       variables,
     }),
-  }).then((res) => res.json());
+  })
+    .then((res) => res.json())
+    .then((json) => {
+      if (json.errors) {
+        throw new Error(`Server error:: ${json.errors[0].message}`);
+      }
+      return json;
+    });
 }
 
 const environment = new Environment({

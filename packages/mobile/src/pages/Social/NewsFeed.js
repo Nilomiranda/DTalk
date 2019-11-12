@@ -1,4 +1,4 @@
-import React, {userState, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, Text} from 'react-native';
 import styled from 'styled-components/native';
 import {graphql, QueryRenderer, fetchQuery} from 'react-relay';
@@ -32,44 +32,50 @@ const BadgeLabel = styled.Text`
 `;
 
 const NewsFeed = () => {
-  const [posts, setPosts] = useState(['hello', 'bye']);
+  const [posts, setPosts] = useState([]);
 
-  async function loadTextPosts() {
-    const query = graphql`
-      query NewsFeedQuery {
-        posts {
-          postedBy {
-            email
-            name
-            id
-          }
-          content
+  const postsQuery = graphql`
+    query NewsFeedQuery {
+      posts {
+        postedBy {
+          email
+          name
+          id
         }
+        content
       }
-    `;
+    }
+  `;
 
-    return fetchQuery(environment, query);
-  }
+  const renderFetchedPosts = ({error, props}) => {
+    if (error) {
+      if (error.message.endsWith('Not authorized')) {
+        return <Text>Error when trying to fetch posts 😢😢 </Text>;
+      }
+    } else if (props) {
+      const {posts: loadedPosts} = props;
+      console.tron.log('TCL: renderFetchedPosts -> loadedPosts', loadedPosts);
 
-  useEffect(async () => {
-    const postsData = await loadTextPosts();
-    const {posts: loadedPosts} = postsData;
-    return setPosts(loadedPosts);
-  }, []);
+      return loadedPosts.map(post => (
+        <TextPost
+          author={post.postedBy.name}
+          content={post.content}
+          key={post.id}
+        />
+      ));
+    } else {
+      return <Text>Loading post</Text>;
+    }
+  };
 
   return (
     <View>
       <FeedContainer>
-        {posts.length > 0 ? (
-          posts.map(post => (
-            <TextPost
-              author={post.postedBy && post.postedBy.name}
-              content={post.content}
-            />
-          ))
-        ) : (
-          <Text>Loading...</Text>
-        )}
+        <QueryRenderer
+          environment={environment}
+          query={postsQuery}
+          render={renderFetchedPosts}
+        />
       </FeedContainer>
       <NewPostBadge>
         <BadgeLabel>New Post</BadgeLabel>

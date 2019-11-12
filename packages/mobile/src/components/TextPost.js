@@ -1,7 +1,7 @@
 /* eslint-disable global-require */
 /* eslint-disable react/prefer-stateless-function */
-import React, {Component} from 'react';
-import {Text} from 'react-native';
+import React, { Component } from 'react';
+import { Text } from 'react-native';
 import styled from 'styled-components/native';
 
 const MainContainer = styled.View`
@@ -50,10 +50,10 @@ const Content = styled.Text`
 
 class TextPost extends Component {
   render() {
-    const {author, content} = this.props;
+    const { author, content, key } = this.props;
 
     return (
-      <MainContainer>
+      <MainContainer key={key}>
         <PostHeader>
           <AuthorImg source={require('../assets/img/avatar.jpeg')} />
           <Metadata>
