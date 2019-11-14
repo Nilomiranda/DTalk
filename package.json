@@ -12,6 +12,7 @@
     "start:server": "yarn workspace server nodemon --exec babel-node dist/index.js",
     "start:web": "yarn workspace client yarn start",
     "start:mobile:ios": "yarn workspace mobile ios",
-    "update:schema": "yarn workspace server babel-node dist/scripts/updateSchema.js"
+    "update:schema": "yarn workspace server babel-node dist/scripts/updateSchema.js",
+    "start:tsc-compiler": "cd packages/server && tsc"
   }
 }
