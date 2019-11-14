@@ -1,19 +1,22 @@
-import React, {useEffect, useState} from 'react';
-import {View, Text} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { 
+View, Text, Modal, TouchableOpacity 
+} from 'react-native';
 import styled from 'styled-components/native';
-import {graphql, QueryRenderer, fetchQuery} from 'react-relay';
+import { graphql, QueryRenderer, fetchQuery } from 'react-relay';
 
 import environment from '../../config/relayEnvironment';
 
 /** custom components */
 import TextPost from '../../components/TextPost';
+import TextPostModal from '../../components/TextPostModal';
 
 /** styling */
 const FeedContainer = styled.ScrollView`
   padding: 10px 20px;
 `;
 
-const NewPostBadge = styled.View`
+const NewPostBadge = styled.TouchableOpacity`
   background: #003152;
   width: 66px;
   height: 66px;
@@ -33,6 +36,9 @@ const BadgeLabel = styled.Text`
 
 const NewsFeed = () => {
   const [posts, setPosts] = useState([]);
+  const [modalVisible, setModalVisibility] = useState(false);
+
+  console.tron.log(modalVisible);
 
   const postsQuery = graphql`
     query NewsFeedQuery {
@@ -47,16 +53,16 @@ const NewsFeed = () => {
     }
   `;
 
-  const renderFetchedPosts = ({error, props}) => {
+  const renderFetchedPosts = ({ error, props }) => {
     if (error) {
       if (error.message.endsWith('Not authorized')) {
         return <Text>Error when trying to fetch posts 😢😢 </Text>;
       }
     } else if (props) {
-      const {posts: loadedPosts} = props;
+      const { posts: loadedPosts } = props;
       console.tron.log('TCL: renderFetchedPosts -> loadedPosts', loadedPosts);
 
-      return loadedPosts.map(post => (
+      return loadedPosts.map((post) => (
         <TextPost
           author={post.postedBy.name}
           content={post.content}
@@ -68,6 +74,14 @@ const NewsFeed = () => {
     }
   };
 
+  const openPostModal = () => {
+    setModalVisibility(true);
+  };
+
+  const closeModal = () => {
+    setModalVisibility(false);
+  };
+
   return (
     <View>
       <FeedContainer>
@@ -77,9 +91,10 @@ const NewsFeed = () => {
           render={renderFetchedPosts}
         />
       </FeedContainer>
-      <NewPostBadge>
+      <NewPostBadge onPress={() => openPostModal()}>
         <BadgeLabel>New Post</BadgeLabel>
       </NewPostBadge>
+      <TextPostModal visible={modalVisible} closeModal={closeModal} />
     </View>
   );
 };
