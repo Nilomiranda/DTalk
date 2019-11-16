@@ -1,5 +1,6 @@
-import React, {useState} from 'react';
-import {Text} from 'react-native';
+import React, { useState } from 'react';
+import { Text } from 'react-native';
+import propTypes from 'prop-types';
 import Modal from 'react-native-modal';
 import styled from 'styled-components/native';
 
@@ -71,26 +72,45 @@ const ButtonLabel = styled.Text`
   margin: auto 0;
 `;
 
-const TextPostModal = ({visible, closeModal}) => (
-  <ModalContainer
-    isVisible={visible}
-    animationType="slide"
-    coverScreen
-    onBackdropPress={() => closeModal()}
-    backdropTransitionInTiming={1000}
-    backdropTransitionOutTiming={1000}>
-    <ModalView>
-      <ModalHeader>
-        <HeaderTitle>New text post</HeaderTitle>
-      </ModalHeader>
-      <ModalContent>
-        <ModalTextField placeholder="What are you thinking?" />
-        <PostButton>
-          <ButtonLabel>Post</ButtonLabel>
-        </PostButton>
-      </ModalContent>
-    </ModalView>
-  </ModalContainer>
-);
+const TextPostModal = ({ visible, closeModal, createNewPost }) => {
+  const [post, setPost] = useState('');
+
+  const handleTextChange = (text) => {
+    setPost(text);
+  };
+
+  return (
+    <ModalContainer
+      isVisible={visible}
+      animationType="slide"
+      coverScreen
+      onBackdropPress={() => closeModal()}
+      backdropTransitionInTiming={1000}
+      backdropTransitionOutTiming={1000}
+    >
+      <ModalView>
+        <ModalHeader>
+          <HeaderTitle>New text post</HeaderTitle>
+        </ModalHeader>
+        <ModalContent>
+          <ModalTextField
+            placeholder="What are you thinking?"
+            onChangeText={(text) => handleTextChange(text)}
+          />
+          <PostButton onPress={() => createNewPost(post)}>
+            <ButtonLabel>Post</ButtonLabel>
+          </PostButton>
+        </ModalContent>
+      </ModalView>
+    </ModalContainer>
+  );
+};
+
+TextPostModal.propTypes = {
+  visible: propTypes.bool.isRequired,
+  closeModal: propTypes.func.isRequired,
+  onDismiss: propTypes.func.isRequired,
+  createNewPost: propTypes.func.isRequired,
+};
 
 export default TextPostModal;
