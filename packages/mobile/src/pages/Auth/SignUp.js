@@ -102,8 +102,8 @@ class SignUp extends Component {
 
   validateForm() {
     const {
- name, email, password, confirmPassword
- } = this.state;
+ name, email, password, confirmPassword 
+} = this.state;
 
     if (password !== confirmPassword) {
       this.setState({ passwordsUnmatch: true });
@@ -146,9 +146,9 @@ class SignUp extends Component {
   }
 
   render() {
-    const { 
-email, passwordsUnmatch, errorMsg, hasError
- } = this.state;
+    const {
+ email, passwordsUnmatch, errorMsg, hasError 
+} = this.state;
 
     return (
       <ScrollView>

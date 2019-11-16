@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { 
-View, Text, Modal, TouchableOpacity 
-} from 'react-native';
+import { View, Text, Modal, TouchableOpacity } from 'react-native';
 import styled from 'styled-components/native';
-import { graphql, QueryRenderer, fetchQuery } from 'react-relay';
+import { graphql, QueryRenderer, commitMutation } from 'react-relay';
 
 import environment from '../../config/relayEnvironment';
 
@@ -60,9 +58,7 @@ const NewsFeed = () => {
       }
     } else if (props) {
       const { posts: loadedPosts } = props;
-      console.tron.log('TCL: renderFetchedPosts -> loadedPosts', loadedPosts);
-
-      return loadedPosts.map((post) => (
+      return loadedPosts.map(post => (
         <TextPost
           author={post.postedBy.name}
           content={post.content}
@@ -82,6 +78,26 @@ const NewsFeed = () => {
     setModalVisibility(false);
   };
 
+  const handleNewPost = postContent => {
+    const newPostMutation = graphql`
+      mutation NewsFeedMutation($content: String!) {
+        createNewTextPost(content: $content) {
+          content
+          postedBy {
+            name
+          }
+        }
+      }
+    `;
+
+    closeModal();
+
+    return commitMutation(environment, {
+      mutation: newPostMutation,
+      variables: { content: postContent },
+    });
+  };
+
   return (
     <View>
       <FeedContainer>
@@ -94,7 +110,11 @@ const NewsFeed = () => {
       <NewPostBadge onPress={() => openPostModal()}>
         <BadgeLabel>New Post</BadgeLabel>
       </NewPostBadge>
-      <TextPostModal visible={modalVisible} closeModal={closeModal} />
+      <TextPostModal
+        visible={modalVisible}
+        closeModal={closeModal}
+        createNewPost={post => handleNewPost(post)}
+      />
     </View>
   );
 };
