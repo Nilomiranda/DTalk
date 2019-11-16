@@ -57,7 +57,7 @@ const NewsFeed = () => {
       }
     } else if (props) {
       const { posts: loadedPosts } = props;
-      return loadedPosts.map((post) => (
+      return loadedPosts.map(post => (
         <TextPost
           author={post.postedBy.name}
           content={post.content}
@@ -77,7 +77,7 @@ const NewsFeed = () => {
     setModalVisibility(false);
   };
 
-  const handleNewPost = (postContent) => {
+  const handleNewPost = postContent => {
     const newPostMutation = graphql`
       mutation NewsFeedMutation($content: String!) {
         createNewTextPost(content: $content) {
@@ -112,7 +112,7 @@ const NewsFeed = () => {
       <TextPostModal
         visible={modalVisible}
         closeModal={closeModal}
-        createNewPost={(post) => handleNewPost(post)}
+        createNewPost={post => handleNewPost(post)}
       />
     </View>
   );
@@ -130,7 +130,11 @@ NewsFeed.propTypes = {
       content: propTypes.string,
       id: propTypes.string,
     }),
-  ).isRequired,
+  ),
+};
+
+NewsFeed.defaultProps = {
+  posts: [],
 };
 
 export default NewsFeed;
