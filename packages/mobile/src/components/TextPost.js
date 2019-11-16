@@ -3,6 +3,7 @@
 import React, { Component } from 'react';
 import { Text } from 'react-native';
 import styled from 'styled-components/native';
+import propTypes from 'prop-types';
 
 const MainContainer = styled.View`
   background: #eee;
@@ -50,10 +51,10 @@ const Content = styled.Text`
 
 class TextPost extends Component {
   render() {
-    const { author, content, key } = this.props;
+    const { author, content } = this.props;
 
     return (
-      <MainContainer key={key}>
+      <MainContainer>
         <PostHeader>
           <AuthorImg source={require('../assets/img/avatar.jpeg')} />
           <Metadata>
@@ -66,5 +67,10 @@ class TextPost extends Component {
     );
   }
 }
+
+TextPost.propTypes = {
+  author: propTypes.string.isRequired,
+  content: propTypes.string.isRequired,
+};
 
 export default TextPost;

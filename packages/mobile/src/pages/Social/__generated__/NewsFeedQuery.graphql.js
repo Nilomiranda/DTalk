@@ -1,6 +1,6 @@
 /**
  * @flow
- * @relayHash 09ea1f0eec008d38d2ce749cad98874a
+ * @relayHash edbb7a99397ee4a5d11e91e83ffca403
  */
 
 /* eslint-disable */
@@ -18,6 +18,7 @@ export type NewsFeedQueryResponse = {|
       +id: ?string,
     |},
     +content: string,
+    +id: ?string,
   |}>
 |};
 export type NewsFeedQuery = {|
@@ -49,39 +50,53 @@ var v0 = {
   "args": null,
   "storageKey": null
 },
-v1 = {
-  "kind": "LinkedField",
-  "alias": null,
-  "name": "postedBy",
-  "storageKey": null,
-  "args": null,
-  "concreteType": "User",
-  "plural": false,
-  "selections": [
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "email",
-      "args": null,
-      "storageKey": null
-    },
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "name",
-      "args": null,
-      "storageKey": null
-    },
-    (v0/*: any*/)
-  ]
-},
-v2 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "content",
-  "args": null,
-  "storageKey": null
-};
+v1 = [
+  {
+    "kind": "LinkedField",
+    "alias": null,
+    "name": "posts",
+    "storageKey": null,
+    "args": null,
+    "concreteType": "TextPost",
+    "plural": true,
+    "selections": [
+      {
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "postedBy",
+        "storageKey": null,
+        "args": null,
+        "concreteType": "User",
+        "plural": false,
+        "selections": [
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "email",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "name",
+            "args": null,
+            "storageKey": null
+          },
+          (v0/*: any*/)
+        ]
+      },
+      {
+        "kind": "ScalarField",
+        "alias": null,
+        "name": "content",
+        "args": null,
+        "storageKey": null
+      },
+      (v0/*: any*/)
+    ]
+  }
+];
 return {
   "kind": "Request",
   "fragment": {
@@ -90,42 +105,13 @@ return {
     "type": "RootQueryType",
     "metadata": null,
     "argumentDefinitions": [],
-    "selections": [
-      {
-        "kind": "LinkedField",
-        "alias": null,
-        "name": "posts",
-        "storageKey": null,
-        "args": null,
-        "concreteType": "TextPost",
-        "plural": true,
-        "selections": [
-          (v1/*: any*/),
-          (v2/*: any*/)
-        ]
-      }
-    ]
+    "selections": (v1/*: any*/)
   },
   "operation": {
     "kind": "Operation",
     "name": "NewsFeedQuery",
     "argumentDefinitions": [],
-    "selections": [
-      {
-        "kind": "LinkedField",
-        "alias": null,
-        "name": "posts",
-        "storageKey": null,
-        "args": null,
-        "concreteType": "TextPost",
-        "plural": true,
-        "selections": [
-          (v1/*: any*/),
-          (v2/*: any*/),
-          (v0/*: any*/)
-        ]
-      }
-    ]
+    "selections": (v1/*: any*/)
   },
   "params": {
     "operationKind": "query",
@@ -137,5 +123,5 @@ return {
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = '85f5e7cea470271d29fd2c5d85da391d';
+(node/*: any*/).hash = '1d6ca48d78760d9e0a5ff64f26b14b4d';
 module.exports = node;

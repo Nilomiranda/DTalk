@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, Modal, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text } from 'react-native';
 import styled from 'styled-components/native';
 import { graphql, QueryRenderer, commitMutation } from 'react-relay';
+import propTypes from 'prop-types';
 
 import environment from '../../config/relayEnvironment';
 
@@ -33,10 +34,7 @@ const BadgeLabel = styled.Text`
 `;
 
 const NewsFeed = () => {
-  const [posts, setPosts] = useState([]);
   const [modalVisible, setModalVisibility] = useState(false);
-
-  console.tron.log(modalVisible);
 
   const postsQuery = graphql`
     query NewsFeedQuery {
@@ -47,6 +45,7 @@ const NewsFeed = () => {
           id
         }
         content
+        id
       }
     }
   `;
@@ -54,11 +53,11 @@ const NewsFeed = () => {
   const renderFetchedPosts = ({ error, props }) => {
     if (error) {
       if (error.message.endsWith('Not authorized')) {
-        return <Text>Error when trying to fetch posts 😢😢 </Text>;
+        return <Text>Error when trying to fetch posts</Text>;
       }
     } else if (props) {
       const { posts: loadedPosts } = props;
-      return loadedPosts.map(post => (
+      return loadedPosts.map((post) => (
         <TextPost
           author={post.postedBy.name}
           content={post.content}
@@ -78,7 +77,7 @@ const NewsFeed = () => {
     setModalVisibility(false);
   };
 
-  const handleNewPost = postContent => {
+  const handleNewPost = (postContent) => {
     const newPostMutation = graphql`
       mutation NewsFeedMutation($content: String!) {
         createNewTextPost(content: $content) {
@@ -113,10 +112,25 @@ const NewsFeed = () => {
       <TextPostModal
         visible={modalVisible}
         closeModal={closeModal}
-        createNewPost={post => handleNewPost(post)}
+        createNewPost={(post) => handleNewPost(post)}
       />
     </View>
   );
+};
+
+NewsFeed.propTypes = {
+  posts: propTypes.arrayOf(
+    propTypes.shape({
+      postedBy: propTypes.shape({
+        email: propTypes.string,
+        name: propTypes.string,
+        id: propTypes.string,
+        createdAt: propTypes.string,
+      }),
+      content: propTypes.string,
+      id: propTypes.string,
+    }),
+  ).isRequired,
 };
 
 export default NewsFeed;
