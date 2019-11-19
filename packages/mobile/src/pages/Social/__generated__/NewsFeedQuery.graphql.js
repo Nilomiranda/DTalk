@@ -1,6 +1,6 @@
 /**
  * @flow
- * @relayHash edbb7a99397ee4a5d11e91e83ffca403
+ * @relayHash 4c4453394636c83617227c6beb93f00c
  */
 
 /* eslint-disable */
@@ -9,16 +9,11 @@
 
 /*::
 import type { ConcreteRequest } from 'relay-runtime';
+type TextPost_post$ref = any;
 export type NewsFeedQueryVariables = {||};
 export type NewsFeedQueryResponse = {|
   +posts: ?$ReadOnlyArray<?{|
-    +postedBy: ?{|
-      +email: ?string,
-      +name: ?string,
-      +id: ?string,
-    |},
-    +content: string,
-    +id: ?string,
+    +$fragmentRefs: TextPost_post$ref
   |}>
 |};
 export type NewsFeedQuery = {|
@@ -31,14 +26,19 @@ export type NewsFeedQuery = {|
 /*
 query NewsFeedQuery {
   posts {
-    postedBy {
-      email
-      name
-      id
-    }
-    content
+    ...TextPost_post
     id
   }
+}
+
+fragment TextPost_post on TextPost {
+  postedBy {
+    name
+    email
+    id
+  }
+  content
+  id
 }
 */
 
@@ -49,54 +49,7 @@ var v0 = {
   "name": "id",
   "args": null,
   "storageKey": null
-},
-v1 = [
-  {
-    "kind": "LinkedField",
-    "alias": null,
-    "name": "posts",
-    "storageKey": null,
-    "args": null,
-    "concreteType": "TextPost",
-    "plural": true,
-    "selections": [
-      {
-        "kind": "LinkedField",
-        "alias": null,
-        "name": "postedBy",
-        "storageKey": null,
-        "args": null,
-        "concreteType": "User",
-        "plural": false,
-        "selections": [
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "email",
-            "args": null,
-            "storageKey": null
-          },
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "name",
-            "args": null,
-            "storageKey": null
-          },
-          (v0/*: any*/)
-        ]
-      },
-      {
-        "kind": "ScalarField",
-        "alias": null,
-        "name": "content",
-        "args": null,
-        "storageKey": null
-      },
-      (v0/*: any*/)
-    ]
-  }
-];
+};
 return {
   "kind": "Request",
   "fragment": {
@@ -105,23 +58,86 @@ return {
     "type": "RootQueryType",
     "metadata": null,
     "argumentDefinitions": [],
-    "selections": (v1/*: any*/)
+    "selections": [
+      {
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "posts",
+        "storageKey": null,
+        "args": null,
+        "concreteType": "TextPost",
+        "plural": true,
+        "selections": [
+          {
+            "kind": "FragmentSpread",
+            "name": "TextPost_post",
+            "args": null
+          }
+        ]
+      }
+    ]
   },
   "operation": {
     "kind": "Operation",
     "name": "NewsFeedQuery",
     "argumentDefinitions": [],
-    "selections": (v1/*: any*/)
+    "selections": [
+      {
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "posts",
+        "storageKey": null,
+        "args": null,
+        "concreteType": "TextPost",
+        "plural": true,
+        "selections": [
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "postedBy",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "User",
+            "plural": false,
+            "selections": [
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "name",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "email",
+                "args": null,
+                "storageKey": null
+              },
+              (v0/*: any*/)
+            ]
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "content",
+            "args": null,
+            "storageKey": null
+          },
+          (v0/*: any*/)
+        ]
+      }
+    ]
   },
   "params": {
     "operationKind": "query",
     "name": "NewsFeedQuery",
     "id": null,
-    "text": "query NewsFeedQuery {\n  posts {\n    postedBy {\n      email\n      name\n      id\n    }\n    content\n    id\n  }\n}\n",
+    "text": "query NewsFeedQuery {\n  posts {\n    ...TextPost_post\n    id\n  }\n}\n\nfragment TextPost_post on TextPost {\n  postedBy {\n    name\n    email\n    id\n  }\n  content\n  id\n}\n",
     "metadata": {}
   }
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = '1d6ca48d78760d9e0a5ff64f26b14b4d';
+(node/*: any*/).hash = '50d69e2506048c6a2e13129d80b19cff';
 module.exports = node;

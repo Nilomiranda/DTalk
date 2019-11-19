@@ -37,3 +37,8 @@ type User {
   password: String
   createdAt: String
 }
+
+# Example from https://relay.dev/docs/en/local-state-management
+extends type User {
+  textPosts: [TextPost]
+}
