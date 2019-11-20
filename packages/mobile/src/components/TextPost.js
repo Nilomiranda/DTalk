@@ -2,7 +2,11 @@
 /* eslint-disable react/prefer-stateless-function */
 import React, { Component } from 'react';
 import { Text } from 'react-native';
-import { graphql, createFragmentContainer } from 'react-relay';
+import {
+  graphql,
+  createFragmentContainer,
+  createRefetchContainer,
+} from 'react-relay';
 import styled from 'styled-components/native';
 import propTypes from 'prop-types';
 
@@ -58,11 +62,11 @@ class TextPost extends Component {
         <PostHeader>
           <AuthorImg source={require('../assets/img/avatar.jpeg')} />
           <Metadata>
-            <Author>{post.postedBy.name}</Author>
+            <Author>{post.edge.postedBy.name}</Author>
             <PostDate>1 hour ago</PostDate>
           </Metadata>
         </PostHeader>
-        <Content>{post.content}</Content>
+        <Content>{post.edge.content}</Content>
       </MainContainer>
     );
   }
@@ -73,15 +77,15 @@ TextPost.propTypes = {};
 export default createFragmentContainer(TextPost, {
   post: graphql`
     fragment TextPost_post on TextPost {
-      postedBy {
-        name
-        email
+      edge {
+        postedBy {
+          name
+          email
+          id
+        }
+        content
         id
       }
-      content
-      id
     }
   `,
 });
-
-// export default TextPost;

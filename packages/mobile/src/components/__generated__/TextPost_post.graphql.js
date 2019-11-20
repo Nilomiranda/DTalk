@@ -12,13 +12,15 @@ import type { FragmentReference } from "relay-runtime";
 declare export opaque type TextPost_post$ref: FragmentReference;
 declare export opaque type TextPost_post$fragmentType: TextPost_post$ref;
 export type TextPost_post = {|
-  +postedBy: ?{|
-    +name: ?string,
-    +email: ?string,
+  +edge: ?{|
+    +postedBy: ?{|
+      +name: ?string,
+      +email: ?string,
+      +id: ?string,
+    |},
+    +content: string,
     +id: ?string,
   |},
-  +content: string,
-  +id: ?string,
   +$refType: TextPost_post$ref,
 |};
 export type TextPost_post$data = TextPost_post;
@@ -47,40 +49,51 @@ return {
     {
       "kind": "LinkedField",
       "alias": null,
-      "name": "postedBy",
+      "name": "edge",
       "storageKey": null,
       "args": null,
-      "concreteType": "User",
+      "concreteType": "edge",
       "plural": false,
       "selections": [
         {
-          "kind": "ScalarField",
+          "kind": "LinkedField",
           "alias": null,
-          "name": "name",
+          "name": "postedBy",
+          "storageKey": null,
           "args": null,
-          "storageKey": null
+          "concreteType": "User",
+          "plural": false,
+          "selections": [
+            {
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "name",
+              "args": null,
+              "storageKey": null
+            },
+            {
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "email",
+              "args": null,
+              "storageKey": null
+            },
+            (v0/*: any*/)
+          ]
         },
         {
           "kind": "ScalarField",
           "alias": null,
-          "name": "email",
+          "name": "content",
           "args": null,
           "storageKey": null
         },
         (v0/*: any*/)
       ]
-    },
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "content",
-      "args": null,
-      "storageKey": null
-    },
-    (v0/*: any*/)
+    }
   ]
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = '9bd9a471e827b6604f5278e17caf5040';
+(node/*: any*/).hash = '1856a076439def0483ed04c3ae0bf1e1';
 module.exports = node;

@@ -1,13 +1,9 @@
 import React, { useState } from 'react';
 import { View, Text } from 'react-native';
 import styled from 'styled-components/native';
-import {
-  graphql,
-  QueryRenderer,
-  commitMutation,
-  createFragmentContainer,
-} from 'react-relay';
+import { graphql, QueryRenderer, getLinkedRecords } from 'react-relay';
 import propTypes from 'prop-types';
+import commit from './mutations/NewPostMutation';
 
 import environment from '../../config/relayEnvironment';
 
@@ -42,8 +38,8 @@ const NewsFeed = () => {
   const [modalVisible, setModalVisibility] = useState(false);
 
   const postsQuery = graphql`
-    query NewsFeedQuery {
-      posts {
+    query NewsFeedQuery($count: Int) {
+      posts(first: $count) {
         ...TextPost_post
       }
     }
@@ -57,12 +53,11 @@ const NewsFeed = () => {
     } else if (props) {
       const { posts: loadedPosts } = props;
       console.tron.log('TCL: renderFetchedPosts -> props', props);
-      return loadedPosts.map((post) => (
+
+      return loadedPosts.map(post => (
         <TextPost
-          // author={post.postedBy.name}
-          // content={post.content}
-          // key={post.id}
           post={post}
+          // eslint-disable-next-line no-underscore-dangle
           key={post.__id}
         />
       ));
@@ -79,24 +74,8 @@ const NewsFeed = () => {
     setModalVisibility(false);
   };
 
-  const handleNewPost = (postContent) => {
-    const newPostMutation = graphql`
-      mutation NewsFeedMutation($content: String!) {
-        createNewTextPost(content: $content) {
-          content
-          postedBy {
-            name
-          }
-        }
-      }
-    `;
-
-    closeModal();
-
-    return commitMutation(environment, {
-      mutation: newPostMutation,
-      variables: { content: postContent },
-    });
+  const handleNewPost = postContent => {
+    commit(postContent, closeModal);
   };
 
   return (
@@ -106,6 +85,7 @@ const NewsFeed = () => {
           environment={environment}
           query={postsQuery}
           render={renderFetchedPosts}
+          variables={{ count: 2 }}
         />
       </FeedContainer>
       <NewPostBadge onPress={() => openPostModal()}>
@@ -114,7 +94,7 @@ const NewsFeed = () => {
       <TextPostModal
         visible={modalVisible}
         closeModal={closeModal}
-        createNewPost={(post) => handleNewPost(post)}
+        createNewPost={post => handleNewPost(post)}
       />
     </View>
   );

@@ -20,7 +20,7 @@ type Mutation {
 type RootQueryType {
   info: String
   users: [User]
-  posts(postedBy: String): [TextPost]
+  posts(postedBy: String, first: Int, last: Int): [TextPost]
 }
 
 type Schema {

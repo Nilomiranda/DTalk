@@ -3,6 +3,12 @@ schema {
   mutation: Mutation
 }
 
+type edge {
+  id: ID
+  postedBy: User
+  content: String!
+}
+
 """
 First mutation example
 """
@@ -16,7 +22,7 @@ type Mutation {
 type RootQueryType {
   info: String
   users: [User]
-  posts(postedBy: String): [TextPost]
+  posts(postedBy: String, first: Int, last: Int): [TextPost]
 }
 
 type Schema {
@@ -25,9 +31,7 @@ type Schema {
 }
 
 type TextPost {
-  id: ID
-  postedBy: User
-  content: String!
+  edge: edge
 }
 
 type User {
@@ -36,9 +40,4 @@ type User {
   email: String
   password: String
   createdAt: String
-}
-
-# Example from https://relay.dev/docs/en/local-state-management
-extends type User {
-  textPosts: [TextPost]
 }

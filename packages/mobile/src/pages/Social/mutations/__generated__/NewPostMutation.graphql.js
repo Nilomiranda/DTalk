@@ -1,6 +1,6 @@
 /**
  * @flow
- * @relayHash a95f3ecf893488b72443d0c4cf533ec3
+ * @relayHash eb6a7553489750fc221fce765e0fb68f
  */
 
 /* eslint-disable */
@@ -9,35 +9,40 @@
 
 /*::
 import type { ConcreteRequest } from 'relay-runtime';
-export type NewsFeedMutationVariables = {|
+export type NewPostMutationVariables = {|
   content: string
 |};
-export type NewsFeedMutationResponse = {|
+export type NewPostMutationResponse = {|
   +createNewTextPost: ?{|
-    +content: string,
-    +postedBy: ?{|
-      +name: ?string
-    |},
+    +edge: ?{|
+      +postedBy: ?{|
+        +name: ?string
+      |},
+      +content: string,
+      +id: ?string,
+    |}
   |}
 |};
-export type NewsFeedMutation = {|
-  variables: NewsFeedMutationVariables,
-  response: NewsFeedMutationResponse,
+export type NewPostMutation = {|
+  variables: NewPostMutationVariables,
+  response: NewPostMutationResponse,
 |};
 */
 
 
 /*
-mutation NewsFeedMutation(
+mutation NewPostMutation(
   $content: String!
 ) {
   createNewTextPost(content: $content) {
-    content
-    postedBy {
-      name
+    edge {
+      postedBy {
+        name
+        id
+      }
+      content
       id
     }
-    id
   }
 }
 */
@@ -61,14 +66,14 @@ v1 = [
 v2 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "content",
+  "name": "name",
   "args": null,
   "storageKey": null
 },
 v3 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "name",
+  "name": "content",
   "args": null,
   "storageKey": null
 },
@@ -83,7 +88,7 @@ return {
   "kind": "Request",
   "fragment": {
     "kind": "Fragment",
-    "name": "NewsFeedMutation",
+    "name": "NewPostMutation",
     "type": "Mutation",
     "metadata": null,
     "argumentDefinitions": (v0/*: any*/),
@@ -97,17 +102,29 @@ return {
         "concreteType": "TextPost",
         "plural": false,
         "selections": [
-          (v2/*: any*/),
           {
             "kind": "LinkedField",
             "alias": null,
-            "name": "postedBy",
+            "name": "edge",
             "storageKey": null,
             "args": null,
-            "concreteType": "User",
+            "concreteType": "edge",
             "plural": false,
             "selections": [
-              (v3/*: any*/)
+              {
+                "kind": "LinkedField",
+                "alias": null,
+                "name": "postedBy",
+                "storageKey": null,
+                "args": null,
+                "concreteType": "User",
+                "plural": false,
+                "selections": [
+                  (v2/*: any*/)
+                ]
+              },
+              (v3/*: any*/),
+              (v4/*: any*/)
             ]
           }
         ]
@@ -116,7 +133,7 @@ return {
   },
   "operation": {
     "kind": "Operation",
-    "name": "NewsFeedMutation",
+    "name": "NewPostMutation",
     "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
@@ -128,34 +145,45 @@ return {
         "concreteType": "TextPost",
         "plural": false,
         "selections": [
-          (v2/*: any*/),
           {
             "kind": "LinkedField",
             "alias": null,
-            "name": "postedBy",
+            "name": "edge",
             "storageKey": null,
             "args": null,
-            "concreteType": "User",
+            "concreteType": "edge",
             "plural": false,
             "selections": [
+              {
+                "kind": "LinkedField",
+                "alias": null,
+                "name": "postedBy",
+                "storageKey": null,
+                "args": null,
+                "concreteType": "User",
+                "plural": false,
+                "selections": [
+                  (v2/*: any*/),
+                  (v4/*: any*/)
+                ]
+              },
               (v3/*: any*/),
               (v4/*: any*/)
             ]
-          },
-          (v4/*: any*/)
+          }
         ]
       }
     ]
   },
   "params": {
     "operationKind": "mutation",
-    "name": "NewsFeedMutation",
+    "name": "NewPostMutation",
     "id": null,
-    "text": "mutation NewsFeedMutation(\n  $content: String!\n) {\n  createNewTextPost(content: $content) {\n    content\n    postedBy {\n      name\n      id\n    }\n    id\n  }\n}\n",
+    "text": "mutation NewPostMutation(\n  $content: String!\n) {\n  createNewTextPost(content: $content) {\n    edge {\n      postedBy {\n        name\n        id\n      }\n      content\n      id\n    }\n  }\n}\n",
     "metadata": {}
   }
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = '167009300e4fa50e1d1ef5efa9eec374';
+(node/*: any*/).hash = '0d04c5e4a994ae4ac4972ef4eccbb8b2';
 module.exports = node;
