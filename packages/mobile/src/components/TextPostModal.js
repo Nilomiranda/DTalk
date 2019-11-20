@@ -75,7 +75,7 @@ const ButtonLabel = styled.Text`
 const TextPostModal = ({ visible, closeModal, createNewPost }) => {
   const [post, setPost] = useState('');
 
-  const handleTextChange = (text) => {
+  const handleTextChange = text => {
     setPost(text);
   };
 
@@ -95,7 +95,7 @@ const TextPostModal = ({ visible, closeModal, createNewPost }) => {
         <ModalContent>
           <ModalTextField
             placeholder="What are you thinking?"
-            onChangeText={(text) => handleTextChange(text)}
+            onChangeText={text => handleTextChange(text)}
           />
           <PostButton onPress={() => createNewPost(post)}>
             <ButtonLabel>Post</ButtonLabel>
@@ -109,7 +109,6 @@ const TextPostModal = ({ visible, closeModal, createNewPost }) => {
 TextPostModal.propTypes = {
   visible: propTypes.bool.isRequired,
   closeModal: propTypes.func.isRequired,
-  onDismiss: propTypes.func.isRequired,
   createNewPost: propTypes.func.isRequired,
 };
 

@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, Modal, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text } from 'react-native';
 import styled from 'styled-components/native';
-import { graphql, QueryRenderer, commitMutation } from 'react-relay';
+import { graphql, QueryRenderer, getLinkedRecords } from 'react-relay';
+import propTypes from 'prop-types';
+import commit from './mutations/NewPostMutation';
 
 import environment from '../../config/relayEnvironment';
 
@@ -33,20 +35,12 @@ const BadgeLabel = styled.Text`
 `;
 
 const NewsFeed = () => {
-  const [posts, setPosts] = useState([]);
   const [modalVisible, setModalVisibility] = useState(false);
 
-  console.tron.log(modalVisible);
-
   const postsQuery = graphql`
-    query NewsFeedQuery {
-      posts {
-        postedBy {
-          email
-          name
-          id
-        }
-        content
+    query NewsFeedQuery($count: Int) {
+      posts(first: $count) {
+        ...TextPost_post
       }
     }
   `;
@@ -54,15 +48,17 @@ const NewsFeed = () => {
   const renderFetchedPosts = ({ error, props }) => {
     if (error) {
       if (error.message.endsWith('Not authorized')) {
-        return <Text>Error when trying to fetch posts 😢😢 </Text>;
+        return <Text>Error when trying to fetch posts</Text>;
       }
     } else if (props) {
       const { posts: loadedPosts } = props;
+      console.tron.log('TCL: renderFetchedPosts -> props', props);
+
       return loadedPosts.map(post => (
         <TextPost
-          author={post.postedBy.name}
-          content={post.content}
-          key={post.id}
+          post={post}
+          // eslint-disable-next-line no-underscore-dangle
+          key={post.__id}
         />
       ));
     } else {
@@ -79,23 +75,7 @@ const NewsFeed = () => {
   };
 
   const handleNewPost = postContent => {
-    const newPostMutation = graphql`
-      mutation NewsFeedMutation($content: String!) {
-        createNewTextPost(content: $content) {
-          content
-          postedBy {
-            name
-          }
-        }
-      }
-    `;
-
-    closeModal();
-
-    return commitMutation(environment, {
-      mutation: newPostMutation,
-      variables: { content: postContent },
-    });
+    commit(postContent, closeModal);
   };
 
   return (
@@ -105,6 +85,7 @@ const NewsFeed = () => {
           environment={environment}
           query={postsQuery}
           render={renderFetchedPosts}
+          variables={{ count: 2 }}
         />
       </FeedContainer>
       <NewPostBadge onPress={() => openPostModal()}>
@@ -117,6 +98,25 @@ const NewsFeed = () => {
       />
     </View>
   );
+};
+
+NewsFeed.propTypes = {
+  posts: propTypes.arrayOf(
+    propTypes.shape({
+      postedBy: propTypes.shape({
+        email: propTypes.string,
+        name: propTypes.string,
+        id: propTypes.string,
+        createdAt: propTypes.string,
+      }),
+      content: propTypes.string,
+      id: propTypes.string,
+    }),
+  ),
+};
+
+NewsFeed.defaultProps = {
+  posts: [],
 };
 
 export default NewsFeed;

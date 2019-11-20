@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="efbbbedf-fdfb-4a0a-96b6-3e465c55977f" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/packages/mobile/src/components/TextPost.js" beforeDir="false" afterPath="$PROJECT_DIR$/packages/mobile/src/components/TextPost.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/mobile/src/components/__generated__/TextPost_post.graphql.js" beforeDir="false" afterPath="$PROJECT_DIR$/packages/mobile/src/components/__generated__/TextPost_post.graphql.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/mobile/src/data/schema.graphql" beforeDir="false" afterPath="$PROJECT_DIR$/packages/mobile/src/data/schema.graphql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/mobile/src/pages/Social/NewsFeed.js" beforeDir="false" afterPath="$PROJECT_DIR$/packages/mobile/src/pages/Social/NewsFeed.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/mobile/src/pages/Social/__generated__/NewsFeedMutation.graphql.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/mobile/src/pages/Social/__generated__/NewsFeedQuery.graphql.js" beforeDir="false" afterPath="$PROJECT_DIR$/packages/mobile/src/pages/Social/__generated__/NewsFeedQuery.graphql.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/server/dist/data/schema.graphql" beforeDir="false" afterPath="$PROJECT_DIR$/packages/server/dist/data/schema.graphql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/server/dist/graphql/posts/text/schema.js" beforeDir="false" afterPath="$PROJECT_DIR$/packages/server/dist/graphql/posts/text/schema.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/server/src/graphql/posts/text/schema.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/server/src/graphql/posts/text/schema.ts" afterDir="false" />
+    </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="1TtROHfVmLHRierRJqYQbHcSoyz" />
+  <component name="PropertiesComponent">
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="prettierjs.PrettierConfiguration.Package" value="$PROJECT_DIR$/node_modules/prettier" />
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="efbbbedf-fdfb-4a0a-96b6-3e465c55977f" name="Default Changelist" comment="" />
+      <created>1574277371774</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1574277371774</updated>
+      <workItem from="1574277375002" duration="74000" />
+    </task>
+    <servers />
+  </component>
+</project>

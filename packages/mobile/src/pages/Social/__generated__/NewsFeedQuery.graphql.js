@@ -1,6 +1,6 @@
 /**
  * @flow
- * @relayHash 09ea1f0eec008d38d2ce749cad98874a
+ * @relayHash 545608ea48b7df5b31fc17554f1ca966
  */
 
 /* eslint-disable */
@@ -9,15 +9,13 @@
 
 /*::
 import type { ConcreteRequest } from 'relay-runtime';
-export type NewsFeedQueryVariables = {||};
+type TextPost_post$ref = any;
+export type NewsFeedQueryVariables = {|
+  count?: ?number
+|};
 export type NewsFeedQueryResponse = {|
   +posts: ?$ReadOnlyArray<?{|
-    +postedBy: ?{|
-      +email: ?string,
-      +name: ?string,
-      +id: ?string,
-    |},
-    +content: string,
+    +$fragmentRefs: TextPost_post$ref
   |}>
 |};
 export type NewsFeedQuery = {|
@@ -28,11 +26,19 @@ export type NewsFeedQuery = {|
 
 
 /*
-query NewsFeedQuery {
-  posts {
+query NewsFeedQuery(
+  $count: Int
+) {
+  posts(first: $count) {
+    ...TextPost_post
+  }
+}
+
+fragment TextPost_post on TextPost {
+  edge {
     postedBy {
-      email
       name
+      email
       id
     }
     content
@@ -42,43 +48,25 @@ query NewsFeedQuery {
 */
 
 const node/*: ConcreteRequest*/ = (function(){
-var v0 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "id",
-  "args": null,
-  "storageKey": null
-},
-v1 = {
-  "kind": "LinkedField",
-  "alias": null,
-  "name": "postedBy",
-  "storageKey": null,
-  "args": null,
-  "concreteType": "User",
-  "plural": false,
-  "selections": [
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "email",
-      "args": null,
-      "storageKey": null
-    },
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "name",
-      "args": null,
-      "storageKey": null
-    },
-    (v0/*: any*/)
-  ]
-},
+var v0 = [
+  {
+    "kind": "LocalArgument",
+    "name": "count",
+    "type": "Int",
+    "defaultValue": null
+  }
+],
+v1 = [
+  {
+    "kind": "Variable",
+    "name": "first",
+    "variableName": "count"
+  }
+],
 v2 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "content",
+  "name": "id",
   "args": null,
   "storageKey": null
 };
@@ -89,19 +77,22 @@ return {
     "name": "NewsFeedQuery",
     "type": "RootQueryType",
     "metadata": null,
-    "argumentDefinitions": [],
+    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
         "kind": "LinkedField",
         "alias": null,
         "name": "posts",
         "storageKey": null,
-        "args": null,
+        "args": (v1/*: any*/),
         "concreteType": "TextPost",
         "plural": true,
         "selections": [
-          (v1/*: any*/),
-          (v2/*: any*/)
+          {
+            "kind": "FragmentSpread",
+            "name": "TextPost_post",
+            "args": null
+          }
         ]
       }
     ]
@@ -109,20 +100,62 @@ return {
   "operation": {
     "kind": "Operation",
     "name": "NewsFeedQuery",
-    "argumentDefinitions": [],
+    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
         "kind": "LinkedField",
         "alias": null,
         "name": "posts",
         "storageKey": null,
-        "args": null,
+        "args": (v1/*: any*/),
         "concreteType": "TextPost",
         "plural": true,
         "selections": [
-          (v1/*: any*/),
-          (v2/*: any*/),
-          (v0/*: any*/)
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "edge",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "edge",
+            "plural": false,
+            "selections": [
+              {
+                "kind": "LinkedField",
+                "alias": null,
+                "name": "postedBy",
+                "storageKey": null,
+                "args": null,
+                "concreteType": "User",
+                "plural": false,
+                "selections": [
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "name",
+                    "args": null,
+                    "storageKey": null
+                  },
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "email",
+                    "args": null,
+                    "storageKey": null
+                  },
+                  (v2/*: any*/)
+                ]
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "content",
+                "args": null,
+                "storageKey": null
+              },
+              (v2/*: any*/)
+            ]
+          }
         ]
       }
     ]
@@ -131,11 +164,11 @@ return {
     "operationKind": "query",
     "name": "NewsFeedQuery",
     "id": null,
-    "text": "query NewsFeedQuery {\n  posts {\n    postedBy {\n      email\n      name\n      id\n    }\n    content\n    id\n  }\n}\n",
+    "text": "query NewsFeedQuery(\n  $count: Int\n) {\n  posts(first: $count) {\n    ...TextPost_post\n  }\n}\n\nfragment TextPost_post on TextPost {\n  edge {\n    postedBy {\n      name\n      email\n      id\n    }\n    content\n    id\n  }\n}\n",
     "metadata": {}
   }
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = '85f5e7cea470271d29fd2c5d85da391d';
+(node/*: any*/).hash = '01fa28117a57915a1d49cde1b3a6189d';
 module.exports = node;
