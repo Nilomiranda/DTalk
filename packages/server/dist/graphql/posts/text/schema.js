@@ -7,46 +7,86 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { GraphQLObjectType, GraphQLString, GraphQLNonNull, GraphQLID } from 'graphql';
+import { GraphQLObjectType, GraphQLString, GraphQLNonNull, GraphQLID, GraphQLInt, GraphQLList, } from 'graphql';
 import User from '../../users/schema';
 import isUserLogged from '../../../middlewares/auth';
+const hasNextPage = () => {
+    return;
+};
+const countPosts = (root, args, context) => __awaiter(void 0, void 0, void 0, function* () {
+    const postsCount = yield context.prisma
+        .textPostsConnection()
+        .aggregate()
+        .count();
+    console.log('TCL: countPosts -> postsCount', postsCount);
+    return postsCount;
+});
 const TextPost = new GraphQLObjectType({
     name: 'TextPost',
     fields: {
-        edge: {
-            type: new GraphQLObjectType({
-                name: 'edge',
+        edges: {
+            type: GraphQLList(new GraphQLObjectType({
+                name: 'edges',
                 fields: {
-                    id: {
-                        type: GraphQLID,
+                    node: {
+                        type: new GraphQLObjectType({
+                            name: 'node',
+                            fields: {
+                                id: {
+                                    type: GraphQLID,
+                                    resolve(parent, args, context) {
+                                        isUserLogged(context);
+                                        return parent.id;
+                                    },
+                                },
+                                postedBy: {
+                                    type: User,
+                                    resolve(parent, args, context) {
+                                        console.log('TCL: resolve -> args', args.id);
+                                        isUserLogged(context);
+                                        return context.prisma
+                                            .textPost({ id: parent.id })
+                                            .postedBy();
+                                    },
+                                },
+                                content: {
+                                    type: GraphQLNonNull(GraphQLString),
+                                    resolve(parent, args, context) {
+                                        isUserLogged(context);
+                                        return parent.content;
+                                    },
+                                },
+                                createdAt: {
+                                    type: GraphQLString,
+                                    resolve(parent, args, context) {
+                                        return parent.createdAt;
+                                    },
+                                },
+                            },
+                        }),
                         resolve(parent, args, context) {
-                            isUserLogged(context);
+                            return __awaiter(this, void 0, void 0, function* () {
+                                return parent;
+                            });
+                        },
+                    },
+                    cursor: {
+                        type: GraphQLString,
+                        resolve(parent) {
                             return parent.id;
                         },
                     },
-                    postedBy: {
-                        type: User,
-                        // args: { id: { type: GraphQLString } },
-                        resolve(parent, args, context) {
-                            console.log('TCL: resolve -> args', args.id);
-                            isUserLogged(context);
-                            return context.prisma.textPost({ id: parent.id }).postedBy();
-                        },
-                    },
-                    content: {
-                        type: GraphQLNonNull(GraphQLString),
-                        resolve(parent, args, context) {
-                            isUserLogged(context);
-                            return parent.content;
-                        },
-                    },
                 },
-            }),
+            })),
             resolve(parent, args, context) {
                 return __awaiter(this, void 0, void 0, function* () {
                     return parent;
                 });
             },
+        },
+        totalCount: {
+            type: GraphQLInt,
+            resolve: countPosts,
         },
     },
 });

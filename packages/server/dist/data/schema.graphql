@@ -3,10 +3,9 @@ schema {
   mutation: Mutation
 }
 
-type edge {
-  id: ID
-  postedBy: User
-  content: String!
+type edges {
+  node: node
+  cursor: String
 }
 
 """First mutation example"""
@@ -17,10 +16,17 @@ type Mutation {
   createNewTextPost(content: String!): TextPost
 }
 
+type node {
+  id: ID
+  postedBy: User
+  content: String!
+  createdAt: String
+}
+
 type RootQueryType {
   info: String
   users: [User]
-  posts(postedBy: String, first: Int, last: Int): [TextPost]
+  posts(postedBy: String, first: Int, last: Int, after: String, id: ID): TextPost
 }
 
 type Schema {
@@ -29,7 +35,7 @@ type Schema {
 }
 
 type TextPost {
-  edge: edge
+  edges: [edges]
 }
 
 type User {
