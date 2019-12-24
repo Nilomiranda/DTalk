@@ -16,7 +16,7 @@ async function createPost(root, args, context: Prisma | any) {
     content,
     postedBy: { connect: { id: author.id } },
   });
-  return newPost;
+  return [newPost];
 }
 
 export const postText = () => {

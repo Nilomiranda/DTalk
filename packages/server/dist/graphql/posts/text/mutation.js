@@ -20,7 +20,7 @@ function createPost(root, args, context) {
             content,
             postedBy: { connect: { id: author.id } },
         });
-        return newPost;
+        return [newPost];
     });
 }
 export const postText = () => {

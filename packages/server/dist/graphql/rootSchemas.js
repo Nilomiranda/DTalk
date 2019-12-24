@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { GraphQLSchema, GraphQLObjectType, GraphQLString, GraphQLList, GraphQLInt } from 'graphql';
+import { GraphQLSchema, GraphQLObjectType, GraphQLString, GraphQLList, GraphQLInt, GraphQLID, } from 'graphql';
 // schemas
 import User from './users/schema';
 import TextPost from './posts/text/schema';
@@ -30,12 +30,19 @@ export const Schema = new GraphQLSchema({
                 },
             },
             posts: {
-                type: new GraphQLList(TextPost),
-                args: { postedBy: { type: GraphQLString }, first: { type: GraphQLInt }, last: { type: GraphQLInt } },
+                type: TextPost,
+                args: {
+                    postedBy: { type: GraphQLString },
+                    first: { type: GraphQLInt },
+                    last: { type: GraphQLInt },
+                    after: { type: GraphQLString },
+                    id: { type: GraphQLID },
+                },
                 resolve(root, args, context, info) {
                     return __awaiter(this, void 0, void 0, function* () {
                         return context.prisma.textPosts({
-                            where: { postedBy: { id: args.postedBy } },
+                            where: { postedBy: { id: args.postedBy }, id: args.id },
+                            after: args.after,
                             first: args.first,
                             last: args.last,
                         });
