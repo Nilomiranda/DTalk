@@ -7,20 +7,53 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { GraphQLObjectType, GraphQLString, GraphQLNonNull, GraphQLID, GraphQLInt, GraphQLList, } from 'graphql';
+import { GraphQLObjectType, GraphQLString, GraphQLNonNull, GraphQLID, GraphQLInt, GraphQLList, GraphQLBoolean, } from 'graphql';
 import User from '../../users/schema';
 import isUserLogged from '../../../middlewares/auth';
-const hasNextPage = () => {
-    return;
-};
-const countPosts = (root, args, context) => __awaiter(void 0, void 0, void 0, function* () {
+let totalPosts;
+let textPosts = [];
+let hasNextPage;
+let endCursor;
+const findAllPosts = (root, args, context) => __awaiter(void 0, void 0, void 0, function* () {
+    const { prisma } = context;
+    const { args: queryArgs } = context;
+    const { postedBy, id: postId, after, first, last } = queryArgs;
+    const posts = yield prisma.textPosts({
+        where: { postedBy: { id: postedBy }, id: postId },
+        after: after,
+        first: first,
+        last: last,
+    });
+    textPosts = posts;
+    if (posts) {
+        determineLastCursor();
+        checkIfHasNextPage(context);
+    }
+    return posts;
+});
+const countPosts = (context) => __awaiter(void 0, void 0, void 0, function* () {
+    const { args: queryArgs } = context;
+    const { postedBy, id: postId } = queryArgs;
     const postsCount = yield context.prisma
-        .textPostsConnection()
+        .textPostsConnection({
+        where: { postedBy: { id: postedBy }, id: postId },
+    })
         .aggregate()
         .count();
-    console.log('TCL: countPosts -> postsCount', postsCount);
-    return postsCount;
+    totalPosts = postsCount;
 });
+const checkIfHasNextPage = context => {
+    const postsCount = totalPosts;
+    const { args: queryArgs } = context;
+    const { first: limit } = queryArgs;
+    hasNextPage = postsCount > limit && endCursor !== null;
+    return hasNextPage;
+};
+const determineLastCursor = () => {
+    endCursor = textPosts[textPosts.length - 1]
+        ? textPosts[textPosts.length - 1].id
+        : null;
+};
 const TextPost = new GraphQLObjectType({
     name: 'TextPost',
     fields: {
@@ -42,7 +75,6 @@ const TextPost = new GraphQLObjectType({
                                 postedBy: {
                                     type: User,
                                     resolve(parent, args, context) {
-                                        console.log('TCL: resolve -> args', args.id);
                                         isUserLogged(context);
                                         return context.prisma
                                             .textPost({ id: parent.id })
@@ -80,13 +112,48 @@ const TextPost = new GraphQLObjectType({
             })),
             resolve(parent, args, context) {
                 return __awaiter(this, void 0, void 0, function* () {
-                    return parent;
+                    yield findAllPosts(parent, null, context);
+                    return textPosts;
                 });
             },
         },
         totalCount: {
             type: GraphQLInt,
-            resolve: countPosts,
+            resolve(parent, args, context) {
+                return __awaiter(this, void 0, void 0, function* () {
+                    yield countPosts(context);
+                    return totalPosts;
+                });
+            },
+        },
+        pageInfo: {
+            type: new GraphQLObjectType({
+                name: 'pageInfo',
+                fields: {
+                    endCursor: {
+                        type: GraphQLString,
+                        resolve() {
+                            return __awaiter(this, void 0, void 0, function* () {
+                                return endCursor;
+                            });
+                        },
+                    },
+                    hasNextPage: {
+                        type: GraphQLBoolean,
+                        resolve(parent, args, context) {
+                            return __awaiter(this, void 0, void 0, function* () {
+                                return hasNextPage;
+                            });
+                        },
+                    },
+                },
+            }),
+            resolve(parent, args, context) {
+                return __awaiter(this, void 0, void 0, function* () {
+                    yield findAllPosts(parent, null, context);
+                    return yield parent;
+                });
+            },
         },
     },
 });

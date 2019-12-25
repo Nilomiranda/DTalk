@@ -6,23 +6,67 @@ import {
   GraphQLScalarType,
   GraphQLInt,
   GraphQLList,
+  GraphQLBoolean,
 } from 'graphql';
 import User from '../../users/schema';
-import { Prisma } from '../../../prisma/generated/prisma-client';
+import { Prisma, TextPost } from '../../../prisma/generated/prisma-client';
 import isUserLogged from '../../../middlewares/auth';
 
-const hasNextPage = () => {
-  return;
+let totalPosts: number;
+let textPosts: TextPost[] = [];
+let hasNextPage: boolean;
+let endCursor: string;
+
+const findAllPosts = async (root, args, context) => {
+  const { prisma }: { prisma: Prisma } = context;
+  const { args: queryArgs } = context;
+  const { postedBy, id: postId, after, first, last } = queryArgs;
+
+  const posts = await prisma.textPosts({
+    where: { postedBy: { id: postedBy }, id: postId },
+    after: after,
+    first: first,
+    last: last,
+  });
+
+  textPosts = posts;
+
+  if (posts) {
+    determineLastCursor();
+    checkIfHasNextPage(context);
+  }
+
+  return posts;
 };
 
-const countPosts = async (root, args, context) => {
+const countPosts = async context => {
+  const { args: queryArgs } = context;
+  const { postedBy, id: postId } = queryArgs;
+
   const postsCount: number = await context.prisma
-    .textPostsConnection()
+    .textPostsConnection({
+      where: { postedBy: { id: postedBy }, id: postId },
+    })
     .aggregate()
     .count();
-  console.log('TCL: countPosts -> postsCount', postsCount);
 
-  return postsCount;
+  totalPosts = postsCount;
+};
+
+const checkIfHasNextPage = context => {
+  const postsCount = totalPosts;
+  const { args: queryArgs } = context;
+  const { first: limit } = queryArgs;
+
+  hasNextPage = postsCount > limit && endCursor !== null;
+
+  return hasNextPage;
+};
+
+const determineLastCursor = () => {
+  endCursor = textPosts[textPosts.length - 1]
+    ? textPosts[textPosts.length - 1].id
+    : null;
 };
 
 const TextPost = new GraphQLObjectType({
@@ -47,7 +91,6 @@ const TextPost = new GraphQLObjectType({
                   postedBy: {
                     type: User,
                     resolve(parent, args, context) {
-                      console.log('TCL: resolve -> args', args.id);
                       isUserLogged(context);
                       return context.prisma
                         .textPost({ id: parent.id })
@@ -82,13 +125,40 @@ const TextPost = new GraphQLObjectType({
           },
         })
       ),
-      async resolve(parent, args, context: Prisma | any) {
-        return parent;
+      async resolve(parent, args, context) {
+        await findAllPosts(parent, null, context);
+        return textPosts;
       },
     },
     totalCount: {
       type: GraphQLInt,
-      resolve: countPosts,
+      async resolve(parent, args, context) {
+        await countPosts(context);
+        return totalPosts;
+      },
+    },
+    pageInfo: {
+      type: new GraphQLObjectType({
+        name: 'pageInfo',
+        fields: {
+          endCursor: {
+            type: GraphQLString,
+            async resolve() {
+              return endCursor;
+            },
+          },
+          hasNextPage: {
+            type: GraphQLBoolean,
+            async resolve(parent, args, context) {
+              return hasNextPage;
+            },
+          },
+        },
+      }),
+      async resolve(parent, args, context) {
+        await findAllPosts(parent, null, context);
+        return await parent;
+      },
     },
   },
 });
