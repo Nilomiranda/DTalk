@@ -28,23 +28,6 @@ function commit(content, rootId, onCompleted) {
   return commitMutation(environment, {
     mutation,
     variables,
-    // updater: (store) => {
-    //   const postsStore = store.get(rootId);
-
-    //   const createdPost =
-
-    //   const posts = ConnectionHandler.getConnection(postsStore, 'Feed_posts');
-
-    //   const edges = posts.getLinkedRecords('edges');
-    //   console.tron.log('TCL: commit -> edges', edges);
-
-    //   if (edges.lengh === 0) {
-
-    //   }
-    // },
-    onCompleted: (res) => {
-      console.tron.log('mutation completed ->', res);
-    },
     configs: [
       {
         type: 'RANGE_ADD',
