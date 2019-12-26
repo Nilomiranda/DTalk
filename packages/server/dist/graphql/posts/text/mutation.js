@@ -7,25 +7,83 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import TextPost from './schema';
-import { GraphQLNonNull, GraphQLString } from 'graphql';
+import { GraphQLNonNull, GraphQLString, GraphQLObjectType, GraphQLID, } from 'graphql';
 import isUserLogged from '../../../middlewares/auth';
-function createPost(root, args, context) {
+import UserSchema from '../../users/schema';
+function createPost(root, args, context, info) {
     return __awaiter(this, void 0, void 0, function* () {
+        const { prisma } = context;
         isUserLogged(context);
         const { userId } = context.prisma;
         const { content } = args;
-        const author = yield context.prisma.user({ id: userId });
-        const newPost = yield context.prisma.createTextPost({
+        const author = yield prisma.user({ id: userId });
+        const newPost = yield prisma.createTextPost({
             content,
             postedBy: { connect: { id: author.id } },
         });
-        return [newPost];
+        // const postAuthorName = await prisma
+        //   .textPost({ id: newPost.id })
+        //   .postedBy()
+        //   .name();
+        // const postAuthorID = await prisma
+        //   .textPost({ id: newPost.id })
+        //   .postedBy()
+        //   .id();
+        // Object.assign(newPost, {
+        //   postedBy: { name: postAuthorName, id: postAuthorID },
+        // });
+        console.log('TCL: createPost -> newPost', newPost);
+        return newPost;
     });
 }
+const TextPostResponse = new GraphQLObjectType({
+    name: 'post',
+    fields: {
+        edge: {
+            type: new GraphQLObjectType({
+                name: 'postedge',
+                fields: {
+                    node: {
+                        type: new GraphQLObjectType({
+                            name: 'postnode',
+                            fields: {
+                                id: {
+                                    type: GraphQLID,
+                                    resolve(parent) {
+                                        return parent.id;
+                                    },
+                                },
+                                content: {
+                                    type: GraphQLString,
+                                    resolve(parent) {
+                                        return parent.content;
+                                    },
+                                },
+                                postedBy: {
+                                    type: UserSchema,
+                                    resolve(parent, args, context) {
+                                        return context.prisma
+                                            .textPost({ id: parent.id })
+                                            .postedBy();
+                                    },
+                                },
+                            },
+                        }),
+                        resolve(parent) {
+                            return parent;
+                        },
+                    },
+                },
+            }),
+            resolve(parent) {
+                return parent;
+            },
+        },
+    },
+});
 export const postText = () => {
     return {
-        type: TextPost,
+        type: TextPostResponse,
         args: {
             content: {
                 type: new GraphQLNonNull(GraphQLString),

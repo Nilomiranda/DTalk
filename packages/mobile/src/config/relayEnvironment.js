@@ -1,7 +1,6 @@
-import { 
-Environment, Network, RecordSource, Store 
-} from 'relay-runtime';
+import { Environment, Network, RecordSource, Store } from 'relay-runtime';
 import AsyncStorage from '@react-native-community/async-storage';
+import { installRelayDevTools } from 'relay-devtools';
 
 async function fetchQuery(operation, variables) {
   const token = await AsyncStorage.getItem('SESSION_TOKEN');
@@ -18,14 +17,16 @@ async function fetchQuery(operation, variables) {
       variables,
     }),
   })
-    .then((res) => res.json())
-    .then((json) => {
+    .then(res => res.json())
+    .then(json => {
       if (json.errors) {
         throw new Error(`Server error:: ${json.errors[0].message}`);
       }
       return json;
     });
 }
+
+installRelayDevTools();
 
 const environment = new Environment({
   network: Network.create(fetchQuery),

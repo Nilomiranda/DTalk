@@ -8,7 +8,8 @@
     "start": "react-native start",
     "test": "jest",
     "lint": "eslint .",
-    "relay": "relay-compiler --src ./src --schema ./src/data/schema.graphql --watch"
+    "relay": "relay-compiler --src ./src --schema ./src/data/schema.graphql --watch",
+    "relay-devtools": "./node_modules/.bin/relay-devtools"
   },
   "dependencies": {
     "@react-native-community/async-storage": "^1.6.2",
@@ -17,6 +18,7 @@
     "prop-types": "^15.7.2",
     "react": "16.9.0",
     "react-native": "0.61.2",
+    "react-native-camera": "^3.15.0",
     "react-native-gesture-handler": "^1.4.1",
     "react-native-modal": "^11.5.3",
     "react-native-paper": "^3.1.0",
@@ -28,6 +30,7 @@
     "react-navigation-stack": "^1.9.3",
     "react-navigation-tabs": "^2.5.5",
     "react-relay": "^6.0.0",
+    "relay-devtools": "^1.4.0",
     "relay-runtime": "^6.0.0",
     "styled-components": "^4.4.0"
   },

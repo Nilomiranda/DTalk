@@ -1,22 +1,26 @@
-import React from 'react';
 import { commitMutation, graphql } from 'react-relay';
+import { ConnectionHandler } from 'relay-runtime';
 import environment from '../../../config/relayEnvironment';
 
 const mutation = graphql`
   mutation NewPostMutation($content: String!) {
     createNewTextPost(content: $content) {
       edge {
-        postedBy {
-          name
+        node {
+          id
+          content
+          postedBy {
+            name
+            email
+            id
+          }
         }
-        content
-        id
       }
     }
   }
 `;
 
-function commit(content, onCompleted) {
+function commit(content, rootId, onCompleted) {
   const variables = { content };
 
   onCompleted();
@@ -24,18 +28,36 @@ function commit(content, onCompleted) {
   return commitMutation(environment, {
     mutation,
     variables,
-    updater: store => {
-      const payloadProxy = store.getRootField('createNewTextPost');
-      console.tron.log('TCL: commit -> payloadProxy', payloadProxy);
+    // updater: (store) => {
+    //   const postsStore = store.get(rootId);
 
-      const edge = payloadProxy.getLinkedRecord('edge');
-      console.tron.log('TCL: commit -> edge', edge);
+    //   const createdPost =
 
-      const content = edge.getValue('content');
-      const id = edge.getValue('id');
-      console.tron.log('TCL: commit -> id', id);
-      console.tron.log('TCL: commit -> content', content);
+    //   const posts = ConnectionHandler.getConnection(postsStore, 'Feed_posts');
+
+    //   const edges = posts.getLinkedRecords('edges');
+    //   console.tron.log('TCL: commit -> edges', edges);
+
+    //   if (edges.lengh === 0) {
+
+    //   }
+    // },
+    onCompleted: (res) => {
+      console.tron.log('mutation completed ->', res);
     },
+    configs: [
+      {
+        type: 'RANGE_ADD',
+        parentID: rootId,
+        connectionInfo: [
+          {
+            key: 'Feed_posts',
+            rangeBehavior: 'prepend',
+          },
+        ],
+        edgeName: 'edge',
+      },
+    ],
   });
 }
 

@@ -13,6 +13,7 @@ import isUserLogged from '../../../middlewares/auth';
 let totalPosts;
 let textPosts = [];
 let hasNextPage;
+let hasPreviousPage;
 let endCursor;
 const findAllPosts = (root, args, context) => __awaiter(void 0, void 0, void 0, function* () {
     const { prisma } = context;
@@ -28,6 +29,7 @@ const findAllPosts = (root, args, context) => __awaiter(void 0, void 0, void 0, 
     if (posts) {
         determineLastCursor();
         checkIfHasNextPage(context);
+        checkIfHasPreviousPage(context);
     }
     return posts;
 });
@@ -47,6 +49,13 @@ const checkIfHasNextPage = context => {
     const { args: queryArgs } = context;
     const { first: limit } = queryArgs;
     hasNextPage = postsCount > limit && endCursor !== null;
+    return hasNextPage;
+};
+const checkIfHasPreviousPage = context => {
+    const postsCount = totalPosts;
+    const { args: queryArgs } = context;
+    const { first: limit } = queryArgs;
+    hasPreviousPage = postsCount > limit && endCursor !== null;
     return hasNextPage;
 };
 const determineLastCursor = () => {
@@ -138,11 +147,27 @@ const TextPost = new GraphQLObjectType({
                             });
                         },
                     },
+                    startCursor: {
+                        type: GraphQLString,
+                        resolve() {
+                            return __awaiter(this, void 0, void 0, function* () {
+                                return endCursor;
+                            });
+                        },
+                    },
                     hasNextPage: {
-                        type: GraphQLBoolean,
+                        type: GraphQLNonNull(GraphQLBoolean),
                         resolve(parent, args, context) {
                             return __awaiter(this, void 0, void 0, function* () {
                                 return hasNextPage;
+                            });
+                        },
+                    },
+                    hasPreviousPage: {
+                        type: GraphQLNonNull(GraphQLBoolean),
+                        resolve(parent, args, context) {
+                            return __awaiter(this, void 0, void 0, function* () {
+                                return hasPreviousPage;
                             });
                         },
                     },

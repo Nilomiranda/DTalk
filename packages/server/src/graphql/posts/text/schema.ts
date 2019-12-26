@@ -11,10 +11,12 @@ import {
 import User from '../../users/schema';
 import { Prisma, TextPost } from '../../../prisma/generated/prisma-client';
 import isUserLogged from '../../../middlewares/auth';
+import { resolve } from 'dns';
 
 let totalPosts: number;
 let textPosts: TextPost[] = [];
 let hasNextPage: boolean;
+let hasPreviousPage: boolean;
 let endCursor: string;
 
 const findAllPosts = async (root, args, context) => {
@@ -34,6 +36,7 @@ const findAllPosts = async (root, args, context) => {
   if (posts) {
     determineLastCursor();
     checkIfHasNextPage(context);
+    checkIfHasPreviousPage(context);
   }
 
   return posts;
@@ -59,6 +62,16 @@ const checkIfHasNextPage = context => {
   const { first: limit } = queryArgs;
 
   hasNextPage = postsCount > limit && endCursor !== null;
+
+  return hasNextPage;
+};
+
+const checkIfHasPreviousPage = context => {
+  const postsCount = totalPosts;
+  const { args: queryArgs } = context;
+  const { first: limit } = queryArgs;
+
+  hasPreviousPage = postsCount > limit && endCursor !== null;
 
   return hasNextPage;
 };
@@ -147,10 +160,22 @@ const TextPost = new GraphQLObjectType({
               return endCursor;
             },
           },
+          startCursor: {
+            type: GraphQLString,
+            async resolve() {
+              return endCursor;
+            },
+          },
           hasNextPage: {
-            type: GraphQLBoolean,
+            type: GraphQLNonNull(GraphQLBoolean),
             async resolve(parent, args, context) {
               return hasNextPage;
+            },
+          },
+          hasPreviousPage: {
+            type: GraphQLNonNull(GraphQLBoolean),
+            async resolve(parent, args, context) {
+              return hasPreviousPage;
             },
           },
         },
