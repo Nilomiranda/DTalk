@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 import { View, Text } from 'react-native';
 import styled from 'styled-components/native';
-import { graphql, QueryRenderer, getLinkedRecords } from 'react-relay';
-import propTypes from 'prop-types';
+import { graphql, QueryRenderer } from 'react-relay';
+import { ROOT_ID } from 'relay-runtime';
 import commit from './mutations/NewPostMutation';
 
 import environment from '../../config/relayEnvironment';
 
 /** custom components */
-import TextPost from '../../components/TextPost';
 import TextPostModal from '../../components/TextPostModal';
+import TextPostsList from '../../components/TextPostsList';
 
 /** styling */
 const FeedContainer = styled.ScrollView`
@@ -39,9 +39,7 @@ const NewsFeed = () => {
 
   const postsQuery = graphql`
     query NewsFeedQuery($count: Int) {
-      posts(first: $count) {
-        ...TextPost_post
-      }
+      ...TextPostsList_posts @arguments(count: $count)
     }
   `;
 
@@ -51,16 +49,7 @@ const NewsFeed = () => {
         return <Text>Error when trying to fetch posts</Text>;
       }
     } else if (props) {
-      const { posts: loadedPosts } = props;
-      console.tron.log('TCL: renderFetchedPosts -> props', props);
-
-      return loadedPosts.map(post => (
-        <TextPost
-          post={post}
-          // eslint-disable-next-line no-underscore-dangle
-          key={post.__id}
-        />
-      ));
+      return <TextPostsList posts={props} />;
     } else {
       return <Text>Loading post</Text>;
     }
@@ -74,8 +63,8 @@ const NewsFeed = () => {
     setModalVisibility(false);
   };
 
-  const handleNewPost = postContent => {
-    commit(postContent, closeModal);
+  const handleNewPost = (postContent) => {
+    commit(postContent, ROOT_ID, closeModal);
   };
 
   return (
@@ -85,7 +74,7 @@ const NewsFeed = () => {
           environment={environment}
           query={postsQuery}
           render={renderFetchedPosts}
-          variables={{ count: 2 }}
+          variables={{ count: 10 }}
         />
       </FeedContainer>
       <NewPostBadge onPress={() => openPostModal()}>
@@ -94,25 +83,10 @@ const NewsFeed = () => {
       <TextPostModal
         visible={modalVisible}
         closeModal={closeModal}
-        createNewPost={post => handleNewPost(post)}
+        createNewPost={(post) => handleNewPost(post)}
       />
     </View>
   );
-};
-
-NewsFeed.propTypes = {
-  posts: propTypes.arrayOf(
-    propTypes.shape({
-      postedBy: propTypes.shape({
-        email: propTypes.string,
-        name: propTypes.string,
-        id: propTypes.string,
-        createdAt: propTypes.string,
-      }),
-      content: propTypes.string,
-      id: propTypes.string,
-    }),
-  ),
 };
 
 NewsFeed.defaultProps = {

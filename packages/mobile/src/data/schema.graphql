@@ -3,10 +3,9 @@ schema {
   mutation: Mutation
 }
 
-type edge {
-  id: ID
-  postedBy: User
-  content: String!
+type edges {
+  node: node
+  cursor: String
 }
 
 """
@@ -16,13 +15,47 @@ type Mutation {
   createUser(name: String!, email: String!, password: String!): User
   userLogin(email: String!, password: String!): Schema
   testSession(text: String!): Schema
-  createNewTextPost(content: String!): TextPost
+  createNewTextPost(content: String!): post
+}
+
+type node {
+  id: ID
+  postedBy: User
+  content: String!
+  createdAt: String
+}
+
+type pageInfo {
+  endCursor: String
+  startCursor: String
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+}
+
+type post {
+  edge: postedge
+}
+
+type postedge {
+  node: postnode
+}
+
+type postnode {
+  id: ID
+  content: String
+  postedBy: User
 }
 
 type RootQueryType {
   info: String
   users: [User]
-  posts(postedBy: String, first: Int, last: Int): [TextPost]
+  posts(
+    postedBy: String
+    first: Int
+    last: Int
+    after: String
+    id: ID
+  ): TextPost
 }
 
 type Schema {
@@ -31,7 +64,9 @@ type Schema {
 }
 
 type TextPost {
-  edge: edge
+  edges: [edges]
+  totalCount: Int
+  pageInfo: pageInfo
 }
 
 type User {

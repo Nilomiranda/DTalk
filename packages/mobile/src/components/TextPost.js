@@ -1,12 +1,6 @@
 /* eslint-disable global-require */
 /* eslint-disable react/prefer-stateless-function */
 import React, { Component } from 'react';
-import { Text } from 'react-native';
-import {
-  graphql,
-  createFragmentContainer,
-  createRefetchContainer,
-} from 'react-relay';
 import styled from 'styled-components/native';
 import propTypes from 'prop-types';
 
@@ -57,35 +51,31 @@ const Content = styled.Text`
 class TextPost extends Component {
   render() {
     const { post } = this.props;
+    const { node } = post;
     return (
       <MainContainer>
         <PostHeader>
           <AuthorImg source={require('../assets/img/avatar.jpeg')} />
           <Metadata>
-            <Author>{post.edge.postedBy.name}</Author>
+            <Author>{node.postedBy.name}</Author>
             <PostDate>1 hour ago</PostDate>
           </Metadata>
         </PostHeader>
-        <Content>{post.edge.content}</Content>
+        <Content>{node.content}</Content>
       </MainContainer>
     );
   }
 }
 
-TextPost.propTypes = {};
+TextPost.propTypes = {
+  post: propTypes.shape({
+    node: propTypes.shape({
+      postedBy: propTypes.shape({
+        name: propTypes.string.isRequired,
+      }).isRequired,
+      content: propTypes.string.isRequired,
+    }).isRequired,
+  }).isRequired,
+};
 
-export default createFragmentContainer(TextPost, {
-  post: graphql`
-    fragment TextPost_post on TextPost {
-      edge {
-        postedBy {
-          name
-          email
-          id
-        }
-        content
-        id
-      }
-    }
-  `,
-});
+export default TextPost;

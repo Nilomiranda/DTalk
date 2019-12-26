@@ -40,12 +40,8 @@ export const Schema = new GraphQLSchema({
           id: { type: GraphQLID },
         },
         async resolve(root, args, context, info) {
-          return context.prisma.textPosts({
-            where: { postedBy: { id: args.postedBy }, id: args.id },
-            after: args.after,
-            first: args.first,
-            last: args.last,
-          });
+          console.log('TCL: resolve -> root', root);
+          return Object.assign(context, { args });
         },
       },
     },

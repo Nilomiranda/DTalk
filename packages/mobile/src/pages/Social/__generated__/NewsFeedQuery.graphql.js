@@ -1,6 +1,6 @@
 /**
  * @flow
- * @relayHash 545608ea48b7df5b31fc17554f1ca966
+ * @relayHash 9eb500aa88ee4f7abc978bfd9abe400a
  */
 
 /* eslint-disable */
@@ -9,14 +9,12 @@
 
 /*::
 import type { ConcreteRequest } from 'relay-runtime';
-type TextPost_post$ref = any;
+type TextPostsList_posts$ref = any;
 export type NewsFeedQueryVariables = {|
   count?: ?number
 |};
 export type NewsFeedQueryResponse = {|
-  +posts: ?$ReadOnlyArray<?{|
-    +$fragmentRefs: TextPost_post$ref
-  |}>
+  +$fragmentRefs: TextPostsList_posts$ref
 |};
 export type NewsFeedQuery = {|
   variables: NewsFeedQueryVariables,
@@ -29,20 +27,30 @@ export type NewsFeedQuery = {|
 query NewsFeedQuery(
   $count: Int
 ) {
-  posts(first: $count) {
-    ...TextPost_post
-  }
+  ...TextPostsList_posts_yu5n1
 }
 
-fragment TextPost_post on TextPost {
-  edge {
-    postedBy {
-      name
-      email
-      id
+fragment TextPostsList_posts_yu5n1 on RootQueryType {
+  posts(first: $count) {
+    totalCount
+    edges {
+      node {
+        id
+        content
+        createdAt
+        postedBy {
+          name
+          id
+        }
+        __typename
+      }
+      cursor
     }
-    content
-    id
+    pageInfo {
+      endCursor
+      hasNextPage
+      hasPreviousPage
+    }
   }
 }
 */
@@ -80,18 +88,13 @@ return {
     "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
-        "kind": "LinkedField",
-        "alias": null,
-        "name": "posts",
-        "storageKey": null,
-        "args": (v1/*: any*/),
-        "concreteType": "TextPost",
-        "plural": true,
-        "selections": [
+        "kind": "FragmentSpread",
+        "name": "TextPostsList_posts",
+        "args": [
           {
-            "kind": "FragmentSpread",
-            "name": "TextPost_post",
-            "args": null
+            "kind": "Variable",
+            "name": "count",
+            "variableName": "count"
           }
         ]
       }
@@ -109,54 +112,127 @@ return {
         "storageKey": null,
         "args": (v1/*: any*/),
         "concreteType": "TextPost",
-        "plural": true,
+        "plural": false,
         "selections": [
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "totalCount",
+            "args": null,
+            "storageKey": null
+          },
           {
             "kind": "LinkedField",
             "alias": null,
-            "name": "edge",
+            "name": "edges",
             "storageKey": null,
             "args": null,
-            "concreteType": "edge",
-            "plural": false,
+            "concreteType": "edges",
+            "plural": true,
             "selections": [
               {
                 "kind": "LinkedField",
                 "alias": null,
-                "name": "postedBy",
+                "name": "node",
                 "storageKey": null,
                 "args": null,
-                "concreteType": "User",
+                "concreteType": "node",
                 "plural": false,
                 "selections": [
+                  (v2/*: any*/),
                   {
                     "kind": "ScalarField",
                     "alias": null,
-                    "name": "name",
+                    "name": "content",
                     "args": null,
                     "storageKey": null
                   },
                   {
                     "kind": "ScalarField",
                     "alias": null,
-                    "name": "email",
+                    "name": "createdAt",
                     "args": null,
                     "storageKey": null
                   },
-                  (v2/*: any*/)
+                  {
+                    "kind": "LinkedField",
+                    "alias": null,
+                    "name": "postedBy",
+                    "storageKey": null,
+                    "args": null,
+                    "concreteType": "User",
+                    "plural": false,
+                    "selections": [
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "name",
+                        "args": null,
+                        "storageKey": null
+                      },
+                      (v2/*: any*/)
+                    ]
+                  },
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "__typename",
+                    "args": null,
+                    "storageKey": null
+                  }
                 ]
               },
               {
                 "kind": "ScalarField",
                 "alias": null,
-                "name": "content",
+                "name": "cursor",
+                "args": null,
+                "storageKey": null
+              }
+            ]
+          },
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "pageInfo",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "pageInfo",
+            "plural": false,
+            "selections": [
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "endCursor",
                 "args": null,
                 "storageKey": null
               },
-              (v2/*: any*/)
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "hasNextPage",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "hasPreviousPage",
+                "args": null,
+                "storageKey": null
+              }
             ]
           }
         ]
+      },
+      {
+        "kind": "LinkedHandle",
+        "alias": null,
+        "name": "posts",
+        "args": (v1/*: any*/),
+        "handle": "connection",
+        "key": "Feed_posts",
+        "filters": null
       }
     ]
   },
@@ -164,11 +240,11 @@ return {
     "operationKind": "query",
     "name": "NewsFeedQuery",
     "id": null,
-    "text": "query NewsFeedQuery(\n  $count: Int\n) {\n  posts(first: $count) {\n    ...TextPost_post\n  }\n}\n\nfragment TextPost_post on TextPost {\n  edge {\n    postedBy {\n      name\n      email\n      id\n    }\n    content\n    id\n  }\n}\n",
+    "text": "query NewsFeedQuery(\n  $count: Int\n) {\n  ...TextPostsList_posts_yu5n1\n}\n\nfragment TextPostsList_posts_yu5n1 on RootQueryType {\n  posts(first: $count) {\n    totalCount\n    edges {\n      node {\n        id\n        content\n        createdAt\n        postedBy {\n          name\n          id\n        }\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n      hasPreviousPage\n    }\n  }\n}\n",
     "metadata": {}
   }
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = '01fa28117a57915a1d49cde1b3a6189d';
+(node/*: any*/).hash = '0b9a5cfdc1246cccc0ff43c2c586df06';
 module.exports = node;
