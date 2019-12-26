@@ -29,6 +29,7 @@ const findAllPosts = async (root, args, context) => {
     after: after,
     first: first,
     last: last,
+    orderBy: 'createdAt_DESC',
   });
 
   textPosts = posts;

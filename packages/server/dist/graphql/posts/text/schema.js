@@ -24,6 +24,7 @@ const findAllPosts = (root, args, context) => __awaiter(void 0, void 0, void 0, 
         after: after,
         first: first,
         last: last,
+        orderBy: 'createdAt_DESC',
     });
     textPosts = posts;
     if (posts) {
