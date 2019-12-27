@@ -6,11 +6,11 @@ async function fetchQuery(operation, variables) {
   const token = await AsyncStorage.getItem('SESSION_TOKEN');
   console.tron.log('TCL: fetchQuery -> token', token);
 
-  return fetch('http://localhost:3333/graphiql', {
+  return fetch('http://10.0.2.2:3333/graphiql', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
+      Authorization: token ? `Bearer ${token}` : '',
     },
     body: JSON.stringify({
       query: operation.text,
