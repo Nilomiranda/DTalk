@@ -22,8 +22,9 @@ const NewPostBadge = styled.TouchableOpacity`
   height: 66px;
   border-radius: 33px;
   position: absolute;
-  bottom: 10px;
-  right: 10px;
+  /* bottom: 10px; */
+  top: 580px;
+  right: 30px;
   display: flex;
   justify-content: center;
   align-items: center;
