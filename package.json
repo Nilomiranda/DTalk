@@ -12,6 +12,8 @@
     "start:server": "yarn workspace server nodemon --exec babel-node dist/index.js",
     "start:web": "yarn workspace client yarn start",
     "start:mobile:ios": "yarn workspace mobile ios",
+    "start:mobile:android": "yarn workspace mobile android",
+    "run-avd": "emulator -avd Pixel_2_API_29",
     "update:schema": "yarn workspace server babel-node dist/scripts/updateSchema.js",
     "start:tsc-compiler": "cd packages/server && tsc",
     "start:relay-compiler": "yarn workspace mobile relay"

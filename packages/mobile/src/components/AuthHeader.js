@@ -13,10 +13,12 @@ const HeaderTitle = styled.Text`
   font-size: 46px;
   font-weight: bold;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  width: 300px;
   justify-content: center;
   align-items: center;
   text-align: center;
+  flex-direction: row;
   color: #000;
 `;
 

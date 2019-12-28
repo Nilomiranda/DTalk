@@ -1,10 +1,10 @@
 /* eslint-disable react/prefer-stateless-function */
-import React, {Component} from 'react';
-import {ScrollView} from 'react-native';
+import React, { Component } from 'react';
+import { ScrollView } from 'react-native';
 import styled from 'styled-components/native';
-import {Snackbar} from 'react-native-paper';
+import { Snackbar } from 'react-native-paper';
 import AsyncStorage from '@react-native-community/async-storage';
-import {graphql, commitMutation} from 'react-relay';
+import { graphql, commitMutation } from 'react-relay';
 import environment from '../../config/relayEnvironment';
 
 import SignInImg from '../../assets/img/sign-in.svg';
@@ -77,7 +77,7 @@ class SignIn extends Component {
   }
 
   async checkSession() {
-    const {navigation} = this.props;
+    const { navigation } = this.props;
 
     const token = await AsyncStorage.getItem('SESSION_TOKEN');
     console.tron.log('TCL: SignIn -> checkSession -> token', token);
@@ -88,8 +88,8 @@ class SignIn extends Component {
   }
 
   login() {
-    const {email, password} = this.state;
-    const {navigation} = this.props;
+    const { email, password } = this.state;
+    const { navigation } = this.props;
 
     console.tron.log(email);
 
@@ -97,6 +97,10 @@ class SignIn extends Component {
       mutation SignInMutation($email: String!, $password: String!) {
         userLogin(email: $email, password: $password) {
           token
+          user {
+            email
+            name
+          }
         }
       }
     `;
@@ -109,11 +113,11 @@ class SignIn extends Component {
       },
       onCompleted: (res, err) => {
         if (err) {
-          const {message} = err[0];
-          this.setState({hasError: true, errorMsg: message, email: ''});
+          const { message } = err[0];
+          this.setState({ hasError: true, errorMsg: message, email: '' });
         }
         console.tron.log('TCL: SignIn -> login -> res', res.userLogin.token);
-        const {token} = res.userLogin;
+        const { token } = res.userLogin;
         console.tron.log('TCL: SignIn -> login -> token', token);
 
         AsyncStorage.setItem('SESSION_TOKEN', token);
@@ -125,18 +129,18 @@ class SignIn extends Component {
   }
 
   dismissErrorToast() {
-    this.setState({hasError: false, errorMsg: ''});
+    this.setState({ hasError: false, errorMsg: '' });
   }
 
   gotToForgotPassword() {
     console.tron.log('going to forgot password');
-    const {navigation} = this.props;
+    const { navigation } = this.props;
 
     navigation.navigate('ForgotPassword');
   }
 
   render() {
-    const {email, password, hasError, errorMsg} = this.state;
+    const { email, password, hasError, errorMsg } = this.state;
 
     return (
       <ScrollView>
@@ -147,7 +151,7 @@ class SignIn extends Component {
           <TextInput
             placeholder="you@domain.com"
             autoCapitalize="none"
-            onChangeText={text => this.setState({email: text})}
+            onChangeText={text => this.setState({ email: text })}
           />
 
           <InputLabel>Password</InputLabel>
@@ -155,7 +159,7 @@ class SignIn extends Component {
             placeholder="********"
             autoCapitalize="none"
             secureTextEntry
-            onChangeText={text => this.setState({password: text})}
+            onChangeText={text => this.setState({ password: text })}
           />
 
           <SubmitButton onPress={() => this.login()}>
@@ -169,7 +173,8 @@ class SignIn extends Component {
         <Snackbar
           visible={hasError}
           onDismiss={() => this.dismissErrorToast()}
-          duration={7000}>
+          duration={7000}
+        >
           {errorMsg}
         </Snackbar>
       </ScrollView>

@@ -13,7 +13,7 @@ const TextPostsList = ({ posts }) => {
   return (
     <View>
       {edges.map((post) => (
-        <TextPost post={post} />
+        <TextPost post={post} key={post.node.id} />
       ))}
     </View>
   );
