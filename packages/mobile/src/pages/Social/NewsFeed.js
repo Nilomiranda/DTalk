@@ -16,23 +16,28 @@ const FeedContainer = styled.ScrollView`
   padding: 10px 20px;
 `;
 
+const MainView = styled.View`
+  display: flex;
+  flex: 1;
+`;
+
 const NewPostBadge = styled.TouchableOpacity`
   background: #003152;
   width: 66px;
   height: 66px;
   border-radius: 33px;
-  position: absolute;
-  /* bottom: 10px; */
-  top: 580px;
-  right: 30px;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 10px;
+  padding: 5px;
+  margin-bottom: 10px;
+  margin-left: auto;
+  margin-right: 20px;
 `;
 
 const BadgeLabel = styled.Text`
   color: #eee;
+  text-align: center;
 `;
 
 const NewsFeed = () => {
@@ -69,7 +74,7 @@ const NewsFeed = () => {
   };
 
   return (
-    <View>
+    <MainView>
       <FeedContainer>
         <QueryRenderer
           environment={environment}
@@ -86,7 +91,7 @@ const NewsFeed = () => {
         closeModal={closeModal}
         createNewPost={(post) => handleNewPost(post)}
       />
-    </View>
+    </MainView>
   );
 };
 

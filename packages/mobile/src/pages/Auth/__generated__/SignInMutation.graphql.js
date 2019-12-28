@@ -1,6 +1,6 @@
 /**
  * @flow
- * @relayHash fd2c062e81017fe56c70f02c9215a01b
+ * @relayHash 47f278eba2c47d421c6c93556d5ff358
  */
 
 /* eslint-disable */
@@ -15,7 +15,11 @@ export type SignInMutationVariables = {|
 |};
 export type SignInMutationResponse = {|
   +userLogin: ?{|
-    +token: ?string
+    +token: ?string,
+    +user: ?{|
+      +email: ?string,
+      +name: ?string,
+    |},
   |}
 |};
 export type SignInMutation = {|
@@ -32,6 +36,11 @@ mutation SignInMutation(
 ) {
   userLogin(email: $email, password: $password) {
     token
+    user {
+      email
+      name
+      id
+    }
   }
 }
 */
@@ -53,35 +62,37 @@ var v0 = [
 ],
 v1 = [
   {
-    "kind": "LinkedField",
-    "alias": null,
-    "name": "userLogin",
-    "storageKey": null,
-    "args": [
-      {
-        "kind": "Variable",
-        "name": "email",
-        "variableName": "email"
-      },
-      {
-        "kind": "Variable",
-        "name": "password",
-        "variableName": "password"
-      }
-    ],
-    "concreteType": "Schema",
-    "plural": false,
-    "selections": [
-      {
-        "kind": "ScalarField",
-        "alias": null,
-        "name": "token",
-        "args": null,
-        "storageKey": null
-      }
-    ]
+    "kind": "Variable",
+    "name": "email",
+    "variableName": "email"
+  },
+  {
+    "kind": "Variable",
+    "name": "password",
+    "variableName": "password"
   }
-];
+],
+v2 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "token",
+  "args": null,
+  "storageKey": null
+},
+v3 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "email",
+  "args": null,
+  "storageKey": null
+},
+v4 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "name",
+  "args": null,
+  "storageKey": null
+};
 return {
   "kind": "Request",
   "fragment": {
@@ -90,23 +101,82 @@ return {
     "type": "Mutation",
     "metadata": null,
     "argumentDefinitions": (v0/*: any*/),
-    "selections": (v1/*: any*/)
+    "selections": [
+      {
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "userLogin",
+        "storageKey": null,
+        "args": (v1/*: any*/),
+        "concreteType": "Schema",
+        "plural": false,
+        "selections": [
+          (v2/*: any*/),
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "user",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "User",
+            "plural": false,
+            "selections": [
+              (v3/*: any*/),
+              (v4/*: any*/)
+            ]
+          }
+        ]
+      }
+    ]
   },
   "operation": {
     "kind": "Operation",
     "name": "SignInMutation",
     "argumentDefinitions": (v0/*: any*/),
-    "selections": (v1/*: any*/)
+    "selections": [
+      {
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "userLogin",
+        "storageKey": null,
+        "args": (v1/*: any*/),
+        "concreteType": "Schema",
+        "plural": false,
+        "selections": [
+          (v2/*: any*/),
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "user",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "User",
+            "plural": false,
+            "selections": [
+              (v3/*: any*/),
+              (v4/*: any*/),
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "id",
+                "args": null,
+                "storageKey": null
+              }
+            ]
+          }
+        ]
+      }
+    ]
   },
   "params": {
     "operationKind": "mutation",
     "name": "SignInMutation",
     "id": null,
-    "text": "mutation SignInMutation(\n  $email: String!\n  $password: String!\n) {\n  userLogin(email: $email, password: $password) {\n    token\n  }\n}\n",
+    "text": "mutation SignInMutation(\n  $email: String!\n  $password: String!\n) {\n  userLogin(email: $email, password: $password) {\n    token\n    user {\n      email\n      name\n      id\n    }\n  }\n}\n",
     "metadata": {}
   }
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = '792e21e8e3a66585552936fe5d6f45de';
+(node/*: any*/).hash = '5c476ea6ee477299d6773b86c3424f6b';
 module.exports = node;

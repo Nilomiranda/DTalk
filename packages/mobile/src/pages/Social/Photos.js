@@ -1,45 +1,56 @@
-import React, { Component } from 'react';
-import { Text, TouchableOpacity } from 'react-native';
+import React, { Component, useState } from 'react';
+import { Text, TouchableOpacity, Image, View } from 'react-native';
 import { RNCamera } from 'react-native-camera';
 import styled from 'styled-components/native';
 
-const TakePhotoBtn = styled.Button`
-  padding: 10px 20px;
-  background: #30f;
+const MainView = styled.View`
+  display: flex;
+  justify-content: space-between;
+  flex: 1;
 `;
 
-const BtnLabel = styled.Text`
-  color: #fff;
-  font-weight: bold;
-  font-size: 24px;
-`;
-
-const PhotoPreview = styled.View`
+const PhotoPreview = styled.Image`
   width: 300px;
   height: 300px;
   border: 1px solid #f00;
 `;
 
+const NewPhotoBadge = styled.TouchableOpacity`
+  background: #003152;
+  width: 66px;
+  height: 66px;
+  border-radius: 33px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5px;
+  margin-bottom: 10px;
+  margin-left: auto;
+  margin-right: 20px;
+`;
+
+const BadgeLabel = styled.Text`
+  color: #eee;
+  text-align: center;
+`;
+
 const Photos = () => {
+  const [photo, setPhoto] = useState('');
   let camera;
 
   const takePicture = async () => {
-    console.tron.log(camera);
     if (camera) {
-      console.tron.log('TCL: takePicture -> camera', camera);
       const options = {
-        quality: 0.2,
-        base64: false,
-        exif: false,
-        width: 10,
+        quality: 0.5,
+        base64: true,
       };
       const data = await camera.takePictureAsync(options);
-      console.log(data.uri);
+      setPhoto(data.base64);
     }
   };
 
   return (
-    <PhotoPreview>
+    <MainView>
       <RNCamera
         ref={ref => {
           camera = ref;
@@ -62,14 +73,19 @@ const Photos = () => {
           console.log(barcodes);
         }}
       />
-      {/* <TakePhotoBtn onPress={() => console.tron.log(camera)}>
-        <BtnLabel>Take picture</BtnLabel>
-      </TakePhotoBtn> */}
-      <TakePhotoBtn
-        title="Take picture"
-        onPress={() => console.tron.log(camera)}
-      />
-    </PhotoPreview>
+      {photo ? (
+        <PhotoPreview
+          source={{
+            uri: `data:image/jpeg;base64,${photo}`,
+          }}
+        />
+      ) : (
+        <></>
+      )}
+      <NewPhotoBadge onPress={() => takePicture()}>
+        <BadgeLabel>New Photo</BadgeLabel>
+      </NewPhotoBadge>
+    </MainView>
   );
 };
 
