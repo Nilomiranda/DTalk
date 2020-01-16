@@ -3,7 +3,7 @@
  * the text posts available to the NewsFeed page
  */
 import React from 'react';
-import { View } from 'react-native';
+import { View, FlatList } from 'react-native';
 import propTypes from 'prop-types';
 import { createFragmentContainer, graphql } from 'react-relay';
 import TextPost from './TextPost';
@@ -11,11 +11,11 @@ import TextPost from './TextPost';
 const TextPostsList = ({ posts }) => {
   const { edges } = posts.posts;
   return (
-    <View>
-      {edges.map((post) => (
-        <TextPost post={post} key={post.node.id} />
-      ))}
-    </View>
+    <FlatList
+      data={edges}
+      keyExtractor={item => item.node.id}
+      renderItem={({ item }) => <TextPost post={item} key={item.node.id} />}
+    />
   );
 };
 
