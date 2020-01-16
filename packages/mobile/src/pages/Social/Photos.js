@@ -1,5 +1,4 @@
-import React, { Component, useState } from 'react';
-import { Text, TouchableOpacity, Image, View } from 'react-native';
+import React, { useState } from 'react';
 import { RNCamera } from 'react-native-camera';
 import styled from 'styled-components/native';
 
@@ -39,24 +38,30 @@ const Photos = () => {
   let camera;
 
   const takePicture = async () => {
+    camera.resumePreview();
     if (camera) {
       const options = {
         quality: 0.5,
         base64: true,
       };
-      const data = await camera.takePictureAsync(options);
-      setPhoto(data.base64);
+      try {
+        const data = await camera.takePictureAsync(options);
+        setPhoto(data.base64);
+      } catch (err) {
+        console.tron.log('error when taking picture -> ', err);
+      }
     }
   };
 
   return (
     <MainView>
       <RNCamera
-        ref={ref => {
+        ref={(ref) => {
           camera = ref;
         }}
         captureAudio={false}
         type={RNCamera.Constants.Type.back}
+        flashMode={RNCamera.Constants.FlashMode.on}
         androidCameraPermissionOptions={{
           title: 'Permission to use camera',
           message: 'We need your permission to use your camera',

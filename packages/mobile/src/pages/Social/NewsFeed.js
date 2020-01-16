@@ -12,7 +12,7 @@ import TextPostModal from '../../components/TextPostModal';
 import TextPostsList from '../../components/TextPostsList';
 
 /** styling */
-const FeedContainer = styled.ScrollView`
+const FeedContainer = styled.View`
   padding: 10px 20px;
 `;
 
@@ -33,6 +33,9 @@ const NewPostBadge = styled.TouchableOpacity`
   margin-bottom: 10px;
   margin-left: auto;
   margin-right: 20px;
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
 `;
 
 const BadgeLabel = styled.Text`
@@ -69,7 +72,7 @@ const NewsFeed = () => {
     setModalVisibility(false);
   };
 
-  const handleNewPost = (postContent) => {
+  const handleNewPost = postContent => {
     commit(postContent, ROOT_ID, closeModal);
   };
 
@@ -89,7 +92,7 @@ const NewsFeed = () => {
       <TextPostModal
         visible={modalVisible}
         closeModal={closeModal}
-        createNewPost={(post) => handleNewPost(post)}
+        createNewPost={post => handleNewPost(post)}
       />
     </MainView>
   );
