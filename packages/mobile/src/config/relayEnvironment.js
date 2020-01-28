@@ -16,6 +16,7 @@ async function fetchQuery(operation, variables) {
     API_URL = 'http://10.0.2.2:3333/graphiql';
   }
 
+  // eslint-disable-next-line no-undef
   return fetch(API_URL, {
     method: 'POST',
     headers: {
