@@ -78,7 +78,6 @@ class SignIn extends Component {
 
   async checkSession() {
     const { navigation } = this.props;
-
     const token = await AsyncStorage.getItem('SESSION_TOKEN');
     console.tron.log('TCL: SignIn -> checkSession -> token', token);
 

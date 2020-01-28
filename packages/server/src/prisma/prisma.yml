@@ -1,4 +1,5 @@
-endpoint: http://localhost:4466
+# endpoint: http://localhost:4466
+endpoint: https://dtalk-social-media-c5475991d5.herokuapp.com
 datamodel: datamodel.prisma
 
 generate:

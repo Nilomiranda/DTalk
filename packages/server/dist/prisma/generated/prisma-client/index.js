@@ -22,6 +22,6 @@ export const models = [
 export const Prisma = makePrismaClientClass({
     typeDefs,
     models,
-    endpoint: `http://localhost:4466`
+    endpoint: `https://dtalk-social-media-c5475991d5.herokuapp.com`
 });
 export const prisma = new Prisma();

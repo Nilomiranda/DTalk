@@ -4,17 +4,17 @@ services:
     image: prismagraphql/prisma:1.34
     restart: always
     ports:
-    - "4466:4466"
+      - '4466:4466'
     environment:
       PRISMA_CONFIG: |
-        port: 4466
+        # port: 4466
         # uncomment the next line and provide the env var PRISMA_MANAGEMENT_API_SECRET=my-secret to activate cluster security
         # managementApiSecret: my-secret
         databases:
           default:
             connector: postgres
-            host: host.docker.internal
-            database: prisma
+            host: postgres://nkgisslsqpvilu:a8f6e18cb96fae4ea283c7ba393d57fe52c3fb79031f041874b1809be2f03ef1@ec2-50-19-95-77.compute-1.amazonaws.com:5432/d5m20revqh2g75
+            database: dtalk-social-media-c5475991d5
             schema: public
             user: postgres
             password: docker
