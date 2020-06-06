@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "@types/node": "^12.7.5",
-    "apollo-server-koa": "^2.9.3",
+    "apollo-server-koa": "^2.14.2",
     "bcrypt": "^3.0.6",
     "graphql": "^14.5.4",
     "graphql-import": "^0.7.1",
